@@ -1,12 +1,12 @@
 ﻿[
    {
-      "type":"int",
-      "min":2,
-      "max":3
+      "Item1":"int",
+      "Item2":3,
+      "Item3":10
    },
    {
-      "type":"char",
-      "min":2,
-      "max":3
+      "Item1":"char",
+      "Item2":3,
+      "Item3":10
    }
 ]

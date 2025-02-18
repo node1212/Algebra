@@ -28,11 +28,11 @@ namespace Algebra.Console
             }
             OUT.WriteLine();
 
-            var p4 = new Permutation4('b', 'd', 'c', 'a');
-            OUT.WriteLine($"No format: {p4}");
-            OUT.WriteLine($"Permutation format: {p4.ToString("P")}");
-            OUT.WriteLine($"Full cycle format: {p4.ToString("FC")}");
-            OUT.WriteLine($"Short cycle format: {p4.ToString("SC")}");
+            //var p4 = new Permutation4char('b', 'd', 'c', 'a');
+            //OUT.WriteLine($"No format: {p4}");
+            //OUT.WriteLine($"Permutation format: {p4.ToString("P")}");
+            //OUT.WriteLine($"Full cycle format: {p4.ToString("FC")}");
+            //OUT.WriteLine($"Short cycle format: {p4.ToString("SC")}");
         }
     }
 }

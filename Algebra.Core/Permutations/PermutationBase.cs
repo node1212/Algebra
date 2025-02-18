@@ -258,15 +258,15 @@ namespace Algebra.Core.Permutations
         public override string ToString() => $"({string.Join(' ', Elements.Values)})";
 
         /// <summary>
+        /// Possible formats:
         /// <list type="bullet">
-        /// <listheader>Possible formats:</listheader>
         /// <item><description>P - permutation format (default): (2 4 3 1)</description></item> 
         /// <item><description>FC - full cycle format: (124)(3)</description></item>
         /// <item><description>SC - short cycle format: (124)</description></item>
         /// </list>
         /// </summary>
-        /// <param name="format"></param>
-        /// <param name="formatProvider"></param>
+        /// <param name="format">P (default), FC or SC</param>
+        /// <param name="formatProvider">not used</param>
         /// <returns></returns>
         /// <exception cref="FormatException"></exception>
         public virtual string ToString(string format, IFormatProvider formatProvider = null)
@@ -275,7 +275,6 @@ namespace Algebra.Core.Permutations
             {
                 format = "P";
             }
-            //formatProvider ??= CultureInfo.CurrentCulture;
             return format.ToUpperInvariant() switch
             {
                 "P" => ToString(),

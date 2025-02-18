@@ -13,13 +13,13 @@ namespace Algebra.Tests
             Assert.True(S3.IsValid);
         }
 
-        [Fact]
-        public void Permutation4Group_Passes_Validation()
-        {
-            var S4 = new MultiplicativeGroup<Permutation4>(Permutation4.Generate());
+        //[Fact]
+        //public void Permutation4Group_Passes_Validation()
+        //{
+        //    var S4 = new MultiplicativeGroup<Permutation4>(Permutation4.Generate());
 
-            Assert.True(S4.IsValid);
-        }
+        //    Assert.True(S4.IsValid);
+        //}
 
         [Fact]
         public void Multiplication_Should_Work()

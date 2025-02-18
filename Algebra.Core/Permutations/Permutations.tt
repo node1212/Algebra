@@ -1,0 +1,62 @@
+﻿<#@ template debug="true" hostspecific="true" language="C#" #>
+<#@ assembly name="System.Core" #>
+<#@ assembly name="System.Memory" #>
+<#@ assembly name="System.Text.Json" #>
+<#@ import namespace="System.IO" #>
+<#@ import namespace="System.Text.Json" #>
+<#@ output extension=".cs" #>
+using System.Diagnostics.CodeAnalysis;
+using System.Numerics;
+
+namespace Algebra.Core.Permutations
+{
+<#
+    var templateFileName = Path.GetFileNameWithoutExtension(this.Host.TemplateFile);
+    var settingsPath = this.Host.ResolvePath($"{templateFileName}.json");
+    var settings = JsonSerializer.Deserialize<Tuple<string, int, int>[]>(File.ReadAllText(settingsPath));
+    foreach (var (name, min, max) in settings)
+    {
+        for (var i = min; i <= max; i++)
+        {
+            var suffix = $"Of{i}{name}";
+#>
+    public class Permutation<#=suffix#>(params <#=name#>[] elements) :
+        PermutationBase<Permutation<#=suffix#>, <#=name#>>(AllowedValues, elements),
+        IEqualityOperators<Permutation<#=suffix#>, Permutation<#=suffix#>, bool>,
+        IMultiplyOperators<Permutation<#=suffix#>, Permutation<#=suffix#>, Permutation<#=suffix#>>,
+        IHasAllowedValues<<#=name#>>,
+        IMultiplicativeIdentity<Permutation<#=suffix#>, Permutation<#=suffix#>>,
+        IInversionOperator<Permutation<#=suffix#>, Permutation<#=suffix#>>,
+        IPermutationsGenerator<Permutation<#=suffix#>, <#=name#>>,
+        IParsable<Permutation<#=suffix#>>
+    {
+        public static bool operator ==(Permutation<#=suffix#> left, Permutation<#=suffix#> right) => EqualityOperator(left, right);
+
+        public static bool operator !=(Permutation<#=suffix#> left, Permutation<#=suffix#> right) => NonEqualityOperator(left, right);
+
+        public override bool Equals(object obj) => base.Equals(obj);
+
+        public override int GetHashCode() => base.GetHashCode();
+
+        public static Permutation<#=suffix#> operator *(Permutation<#=suffix#> left, Permutation<#=suffix#> right) => Multiply(left, right);
+
+        public static <#=name#>[] AllowedValues => [];
+
+        public static Permutation<#=suffix#> MultiplicativeIdentity => new(AllowedValues);
+
+        public static Permutation<#=suffix#> operator ~(Permutation<#=suffix#> value) => Inverse(value);
+
+        public static Permutation<#=suffix#>[] Generate() => Generate(MultiplicativeIdentity, e => new Permutation<#=suffix#>(e));
+
+        public static Permutation<#=suffix#> Parse(string s, IFormatProvider provider = null) =>
+            Parse(s, FromCharConverter.To<#=name#>, MultiplicativeIdentity);
+
+        public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, [MaybeNullWhen(false)] out Permutation<#=suffix#> result) =>
+            TryParse(s, FromCharConverter.To<#=name#>, MultiplicativeIdentity, out result);
+    }
+
+<#
+        }
+    }
+#>
+}
