@@ -1,5 +1,5 @@
 ﻿using Algebra.Core;
-using Algebra.Core.Permutations;
+using Algebra.Core.Permutations.T4;
 
 namespace Algebra.Tests
 {
@@ -8,28 +8,28 @@ namespace Algebra.Tests
         [Fact]
         public void Permutation3Group_Passes_Validation()
         {
-            var S3 = new MultiplicativeGroup<Permutation3>(Permutation3.Generate());
+            var S3 = new MultiplicativeGroup<PermutationOf3Int>(PermutationOf3Int.Generate());
 
             Assert.True(S3.IsValid);
         }
 
-        //[Fact]
-        //public void Permutation4Group_Passes_Validation()
-        //{
-        //    var S4 = new MultiplicativeGroup<Permutation4>(Permutation4.Generate());
+        [Fact]
+        public void Permutation4Group_Passes_Validation()
+        {
+            var S4 = new MultiplicativeGroup<PermutationOf4Char>(PermutationOf4Char.Generate());
 
-        //    Assert.True(S4.IsValid);
-        //}
+            Assert.True(S4.IsValid);
+        }
 
         [Fact]
         public void Multiplication_Should_Work()
         {
-            var e = Permutation3.MultiplicativeIdentity;
-            var rho1 = new Permutation3(2, 3, 1); // (123)
-            var rho2 = new Permutation3(3, 1, 2); // (132)
-            var sigma1 = new Permutation3(2, 1, 3); // (12)
-            var sigma2 = new Permutation3(1, 3, 2); // (23)
-            var sigma3 = new Permutation3(3, 2, 1); // (13)
+            var e = PermutationOf3Int.MultiplicativeIdentity;
+            var rho1 = new PermutationOf3Int(2, 3, 1); // (123)
+            var rho2 = new PermutationOf3Int(3, 1, 2); // (132)
+            var sigma1 = new PermutationOf3Int(2, 1, 3); // (12)
+            var sigma2 = new PermutationOf3Int(1, 3, 2); // (23)
+            var sigma3 = new PermutationOf3Int(3, 2, 1); // (13)
 
             Assert.Equal(rho2, rho1 * rho1);
             Assert.Equal(sigma2, sigma1 * rho1);
@@ -43,12 +43,12 @@ namespace Algebra.Tests
         [Fact]
         public void Parsing_Should_Work()
         {
-            var e = Permutation3.Parse("(1)(2)(3)").ToString(); // 1 2 3
-            var rho1 = Permutation3.Parse("(123)").ToString();  // 2 3 1
-            var rho2 = Permutation3.Parse("(132)").ToString();  // 1 3 2
-            var sigma1 = Permutation3.Parse("(12)").ToString(); // 2 1 3
-            var sigma2 = Permutation3.Parse("(23)").ToString(); // 1 3 2
-            var sigma3 = Permutation3.Parse("(13)").ToString(); // 3 2 1
+            var e = PermutationOf3Int.Parse("(1)(2)(3)").ToString(); // 1 2 3
+            var rho1 = PermutationOf3Int.Parse("(123)").ToString();  // 2 3 1
+            var rho2 = PermutationOf3Int.Parse("(132)").ToString();  // 1 3 2
+            var sigma1 = PermutationOf3Int.Parse("(12)").ToString(); // 2 1 3
+            var sigma2 = PermutationOf3Int.Parse("(23)").ToString(); // 1 3 2
+            var sigma3 = PermutationOf3Int.Parse("(13)").ToString(); // 3 2 1
 
             Assert.Equal("e ", e);
             Assert.Equal("ρ₁", rho1);

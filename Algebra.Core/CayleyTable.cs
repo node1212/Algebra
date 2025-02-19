@@ -34,14 +34,15 @@
 
         public T this[T left, T right] => _table[_headerInverse[left], _headerInverse[right]];
 
-        public void Print(Action<object> writer = null)
+        public void Print(Action<object> writer = null, Func<string, string> converter = null)
         {
             writer ??= Console.Write;
+            converter ??= s => s;
             for (var i = 0; i < Order; i++)
             {
                 for (var j = 0; j < Order; j++)
                 {
-                    writer(_table[i, j]);
+                    writer(converter(_table[i, j].ToString()));
                     writer(' ');
                 }
                 writer(Environment.NewLine);

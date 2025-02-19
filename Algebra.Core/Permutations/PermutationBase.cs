@@ -17,7 +17,7 @@ namespace Algebra.Core.Permutations
             {
                 Elements[allowedValues[i]] = elements[i];
             }
-            Size = allowedValues.Length;
+            Length = allowedValues.Length;
         }
 
         private static void Verify(TElement[] allowedValues, TElement[] elements)
@@ -40,13 +40,13 @@ namespace Algebra.Core.Permutations
         protected SortedDictionary<TElement, TElement> Elements { get; private set; } = [];
 
         #region Public properties
-        public int Size { get; private set; }
+        public int Length { get; private set; }
 
         public bool IsIdentity => Elements.All(kvp => kvp.Key.Equals(kvp.Value));
 
         public bool IsInvolution => Multiply((TPermutation)this, (TPermutation)this).IsIdentity;
 
-        public bool IsDerangement => Support.Count() == Size;
+        public bool IsDerangement => Support.Count() == Length;
 
         public bool IsFixedPoint(TElement element) => Elements[element].Equals(element);
 
@@ -109,7 +109,16 @@ namespace Algebra.Core.Permutations
             get
             {
                 var nonTrivialCycles = NonTrivialCycles.ToArray();
-                return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == Size;
+                return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == Length;
+            }
+        }
+
+        public bool IsTransposition
+        {
+            get
+            {
+                var nonTrivialCycles = NonTrivialCycles.ToArray();
+                return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == 2;
             }
         }
         #endregion

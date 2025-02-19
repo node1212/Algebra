@@ -1,6 +1,5 @@
-﻿using Algebra.Core.Permutations;
-using Algebra.Core;
-
+﻿using Algebra.Core;
+using Algebra.Core.Permutations.T4;
 using OUT = System.Console;
 
 namespace Algebra.Console
@@ -9,10 +8,20 @@ namespace Algebra.Console
     {
         private static void Main()
         {
-            var permutations = Permutation3.Generate();
-            var cayleyTable = new CayleyTable<Permutation3>(permutations);
+            var permutations = PermutationOf3Int.Generate();
+            var cayleyTable = new CayleyTable<PermutationOf3Int>(permutations);
             cayleyTable.Fill((e1, e2) => e1 * e2);
-            cayleyTable.Print();
+            static string converter(string s) => s switch
+            {
+                "(1 2 3)" => "e ",
+                "(2 3 1)" => "ρ₁",
+                "(3 1 2)" => "ρ₂",
+                "(2 1 3)" => "σ₁",
+                "(1 3 2)" => "σ₂",
+                "(3 2 1)" => "σ₃",
+                _ => throw new InvalidOperationException("Should not be here"),
+            };
+            cayleyTable.Print(converter: converter);
             OUT.WriteLine();
 
             foreach (var p3 in permutations)
@@ -28,11 +37,11 @@ namespace Algebra.Console
             }
             OUT.WriteLine();
 
-            //var p4 = new Permutation4char('b', 'd', 'c', 'a');
-            //OUT.WriteLine($"No format: {p4}");
-            //OUT.WriteLine($"Permutation format: {p4.ToString("P")}");
-            //OUT.WriteLine($"Full cycle format: {p4.ToString("FC")}");
-            //OUT.WriteLine($"Short cycle format: {p4.ToString("SC")}");
+            var p4 = new PermutationOf4Char('b', 'd', 'c', 'a');
+            OUT.WriteLine($"No format: {p4}");
+            OUT.WriteLine($"Permutation format: {p4.ToString("P")}");
+            OUT.WriteLine($"Full cycle format: {p4.ToString("FC")}");
+            OUT.WriteLine($"Short cycle format: {p4.ToString("SC")}");
         }
     }
 }

@@ -3,22 +3,25 @@
 <#@ assembly name="System.Memory" #>
 <#@ assembly name="System.Text.Json" #>
 <#@ import namespace="System.IO" #>
+<#@ import namespace="System.Linq" #>
 <#@ import namespace="System.Text.Json" #>
 <#@ output extension=".cs" #>
 using System.Diagnostics.CodeAnalysis;
 using System.Numerics;
 
-namespace Algebra.Core.Permutations
+namespace Algebra.Core.Permutations.T4
 {
 <#
     var templateFileName = Path.GetFileNameWithoutExtension(this.Host.TemplateFile);
     var settingsPath = this.Host.ResolvePath($"{templateFileName}.json");
-    var settings = JsonSerializer.Deserialize<Tuple<string, int, int>[]>(File.ReadAllText(settingsPath));
-    foreach (var (name, min, max) in settings)
+    var settings = JsonSerializer.Deserialize<Tuple<string, string, string[], int, int>[]>(File.ReadAllText(settingsPath));
+    foreach (var setting in settings)
     {
-        for (var i = min; i <= max; i++)
+        for (var i = setting.Item4; i <= setting.Item5; i++)
         {
-            var suffix = $"Of{i}{name}";
+            var name = setting.Item1;
+            var fullName = setting.Item2;
+            var suffix = $"Of{i}{string.Concat(name[0].ToString().ToUpperInvariant(), name.Substring(1))}";
 #>
     public class Permutation<#=suffix#>(params <#=name#>[] elements) :
         PermutationBase<Permutation<#=suffix#>, <#=name#>>(AllowedValues, elements),
@@ -40,7 +43,7 @@ namespace Algebra.Core.Permutations
 
         public static Permutation<#=suffix#> operator *(Permutation<#=suffix#> left, Permutation<#=suffix#> right) => Multiply(left, right);
 
-        public static <#=name#>[] AllowedValues => [];
+        public static <#=name#>[] AllowedValues => [<#=string.Join(", ", setting.Item3.Take(i))#>];
 
         public static Permutation<#=suffix#> MultiplicativeIdentity => new(AllowedValues);
 
@@ -49,10 +52,10 @@ namespace Algebra.Core.Permutations
         public static Permutation<#=suffix#>[] Generate() => Generate(MultiplicativeIdentity, e => new Permutation<#=suffix#>(e));
 
         public static Permutation<#=suffix#> Parse(string s, IFormatProvider provider = null) =>
-            Parse(s, FromCharConverter.To<#=name#>, MultiplicativeIdentity);
+            Parse(s, FromCharConverter.To<#=fullName#>, MultiplicativeIdentity);
 
         public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, [MaybeNullWhen(false)] out Permutation<#=suffix#> result) =>
-            TryParse(s, FromCharConverter.To<#=name#>, MultiplicativeIdentity, out result);
+            TryParse(s, FromCharConverter.To<#=fullName#>, MultiplicativeIdentity, out result);
     }
 
 <#

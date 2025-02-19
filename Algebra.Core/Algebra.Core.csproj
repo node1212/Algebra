@@ -7,22 +7,22 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-	  <None Update="Permutations\Permutations.tt">
-	    <Generator>TextTemplatingFileGenerator</Generator>
-	    <LastGenOutput>Permutations.cs</LastGenOutput>
-	  </None>
-	</ItemGroup>
-
-	<ItemGroup>
 	  <Service Include="{508349b6-6b84-4df5-91f0-309beebad82d}" />
 	</ItemGroup>
 
 	<ItemGroup>
-	  <Compile Update="Permutations\Permutations.cs">
+	  <Compile Update="Permutations\T4\Permutations.cs">
 	    <DesignTime>True</DesignTime>
 	    <AutoGen>True</AutoGen>
 	    <DependentUpon>Permutations.tt</DependentUpon>
 	  </Compile>
+	</ItemGroup>
+
+	<ItemGroup>
+	  <None Update="Permutations\T4\Permutations.tt">
+	    <Generator>TextTemplatingFileGenerator</Generator>
+	    <LastGenOutput>Permutations.cs</LastGenOutput>
+	  </None>
 	</ItemGroup>
 
 </Project>

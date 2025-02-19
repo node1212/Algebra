@@ -32,9 +32,9 @@ namespace Algebra.Core.Permutations
         public static PermutationOf2Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf2Char(e));
 
         public static PermutationOf2Char Parse(string s, IFormatProvider provider = null) =>
-            Parse(s, FromCharConverter.Tochar, MultiplicativeIdentity);
+            Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);
 
         public static bool TryParse([NotNullWhen(true)] string s, IFormatProvider provider, [MaybeNullWhen(false)] out PermutationOf2Char result) =>
-            TryParse(s, FromCharConverter.Tochar, MultiplicativeIdentity, out result);
+            TryParse(s, FromCharConverter.ToChar, MultiplicativeIdentity, out result);
     }
 }
