@@ -104,22 +104,14 @@ namespace Algebra.Core.Permutations
 
         public bool IsCyclic => NonTrivialCycles.Count() == 1;
 
-        public bool IsStrictlyCyclic
-        {
-            get
-            {
-                var nonTrivialCycles = NonTrivialCycles.ToArray();
-                return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == Length;
-            }
-        }
+        public bool IsStrictlyCyclic => HasOnlyOneNonTrivialCycleWithLengthEqualTo(Length);
 
-        public bool IsTransposition
+        public bool IsTransposition => HasOnlyOneNonTrivialCycleWithLengthEqualTo(2);
+
+        private bool HasOnlyOneNonTrivialCycleWithLengthEqualTo(int length)
         {
-            get
-            {
-                var nonTrivialCycles = NonTrivialCycles.ToArray();
-                return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == 2;
-            }
+            var nonTrivialCycles = NonTrivialCycles.ToArray();
+            return nonTrivialCycles.Length == 1 && nonTrivialCycles[0].Length == length;
         }
         #endregion
 
