@@ -9,35 +9,11 @@ namespace Algebra.Core
 
         public override bool IsValid => base.IsValid && HasInverseElement;
 
-        private bool HasInverseElement
-        {
-            get
-            {
-                foreach (var a in Elements)
-                {
-                    if (!Elements.Contains(Inverse(a), EqualityComparer))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
+        private bool HasInverseElement =>
+            Elements.All(a => Elements.Contains(Inverse(a), EqualityComparer));
 
-        public bool IsSubgroup(params T[] elements)
-        {
-            for (var i = 0; i < elements.Length; i++)
-            {
-                for (var j = 0; j < elements.Length; j++)
-                {
-                    if (!elements.Contains(Op(elements[i], Inverse(elements[j])), EqualityComparer))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+        public bool HasSubgroup(params T[] elements) =>
+            Elements.All(a => elements.Contains(Op(a, Inverse(a)), EqualityComparer));
     }
 
     public class AdditiveGroup<T>(params T[] elements) : Group<T>(elements) where T :
