@@ -2,10 +2,13 @@
 
 namespace Algebra.Core
 {
-    public abstract class Group<T>(params T[] elements) : Monoid<T>(elements) where T :
-        IEquatable<T>
+    public abstract class Group<T> : Monoid<T> where T : IEquatable<T>
     {
-        protected abstract T Inverse(T element);
+        public Group(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+
+        protected Group(params T[] elements) : base(elements) { }
+
+        protected virtual T Inverse(T element) => CayleyTable.GetInverse(element);
 
         public override bool IsValid => base.IsValid && HasInverseElement;
 

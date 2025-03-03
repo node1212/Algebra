@@ -7,14 +7,18 @@ namespace Algebra.Core
         public HashSet<T> Elements { get; private set; }
         public CayleyTable<T> CayleyTable { get; private set; }
 
-        public Magma(params T[] elements)
+        public Magma(CayleyTable<T> cayleyTable)
         {
-            Elements = [.. elements];
-            CayleyTable = new CayleyTable<T>([.. Elements]);
-            CayleyTable.Fill(Op);
+            Elements = [.. cayleyTable.Header];
+            CayleyTable = cayleyTable;
         }
 
-        protected abstract T Op(T left, T right);
+        protected Magma(params T[] elements)
+        {
+            Elements = [.. elements];
+        }
+
+        protected virtual T Op(T left, T right) => CayleyTable[left, right];
 
         protected EqualityComparer<T> EqualityComparer { get; } = EqualityComparer<T>.Default;
 

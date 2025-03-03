@@ -2,9 +2,13 @@
 
 namespace Algebra.Core
 {
-    public abstract class Monoid<T>(params T[] elements) : Semigroup<T>(elements) where T : IEquatable<T>
+    public abstract class Monoid<T> : Semigroup<T> where T : IEquatable<T>
     {
-        public abstract T Identity { get; }
+        public Monoid(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+
+        protected Monoid(params T[] elements) : base(elements) { }
+
+        public virtual T Identity => CayleyTable.Identity;
 
         public override bool IsValid => base.IsValid & HasNeutralElement;
 

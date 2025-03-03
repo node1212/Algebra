@@ -5,9 +5,27 @@ namespace Algebra.Tests
 {
     public class CayleyTableTests
     {
+        // TODO identity tests -> new tests
+        // TODO inverses tests -> new tests
+        // TODO shared test data
         [Fact]
         public void CayleyTable_ShouldBe_Printable()
         {
+            var ct = new CayleyTable<char>(new char[,]
+            {//    a    b    c    d    e    f
+                { 'f', 'd', 'a', 'e', 'b', 'c' },//a
+                { 'e', 'c', 'b', 'f', 'a', 'd' },//b
+                { 'a', 'b', 'c', 'd', 'e', 'f' },//c
+                { 'b', 'a', 'd', 'c', 'f', 'e' },//d
+                { 'd', 'f', 'e', 'a', 'c', 'b' },//e
+                { 'c', 'e', 'f', 'b', 'd', 'a' },//f
+            }, 'a', 'b', 'c', 'd', 'e', 'f');
+
+            Assert.Single(ct.GetIdentities());
+            Assert.Equal('c', ct.Identity);
+
+            var inverses = ct.Header.ToDictionary(e => e, ct.GetInverse);
+
             var permutations = PermutationOf3Int.Generate();
             var cayleyTable = new CayleyTable<PermutationOf3Int>(permutations);
             cayleyTable.Fill((e1, e2) => e1 * e2);
