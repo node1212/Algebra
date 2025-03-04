@@ -6,9 +6,9 @@ namespace Algebra.Core
     {
         protected readonly CayleyTable<T> _cayleyTable;
 
-        public Magma() { }
-
         public Magma(CayleyTable<T> cayleyTable) => _cayleyTable = cayleyTable;
+
+        public Magma(T[] elements) => _cayleyTable = new CayleyTable<T>(Op, elements);
 
         protected override T[] Elements => _cayleyTable.Header;
 
@@ -17,18 +17,13 @@ namespace Algebra.Core
         public override bool IsValid => IsClosed;
     }
 
-    public abstract class NonCayleyMagmaBase<T>(params T[] elements) : Magma<T> where T : IEquatable<T>
-    {
-        protected override T[] Elements => elements;
-    }
-
-    public class AdditiveMagma<T>(params T[] elements) : NonCayleyMagmaBase<T>(elements) where T :
+    public class AdditiveMagma<T>(params T[] elements) : Magma<T>(elements) where T :
         IAdditionOperators<T, T, T>, IEquatable<T>
     {
         protected override T Op(T left, T right) => left + right;
     }
 
-    public class MultiplicativeMagma<T>(params T[] elements) : NonCayleyMagmaBase<T>(elements) where T :
+    public class MultiplicativeMagma<T>(params T[] elements) : Magma<T>(elements) where T :
         IMultiplyOperators<T, T, T>, IEquatable<T>
     {
         protected override T Op(T left, T right) => left * right;

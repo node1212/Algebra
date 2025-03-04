@@ -4,9 +4,9 @@ namespace Algebra.Core
 {
     public abstract class Group<T> : Monoid<T> where T : IEquatable<T>
     {
-        public Group() { }
-
         public Group(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+
+        public Group(T[] elements) : base(elements) { }
 
         public override bool IsValid => base.IsValid && HasInverseElement;
 
@@ -19,12 +19,7 @@ namespace Algebra.Core
             Elements.All(a => elements.Contains(Op(a, Inverse(a)), EqualityComparer));
     }
 
-    public abstract class NonCayleyGroupBase<T>(params T[] elements) : Group<T> where T : IEquatable<T>
-    {
-        protected override T[] Elements => elements;
-    }
-
-    public class AdditiveGroup<T>(params T[] elements) : NonCayleyGroupBase<T>(elements) where T :
+    public class AdditiveGroup<T>(params T[] elements) : Group<T>(elements) where T :
         IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>, IUnaryNegationOperators<T, T>, IEquatable<T>
     {
         protected override T Op(T left, T right) => left + right;
@@ -34,7 +29,7 @@ namespace Algebra.Core
         protected override T Inverse(T element) => -element;
     }
 
-    public class MultiplicativeGroup<T>(params T[] elements) : NonCayleyGroupBase<T>(elements) where T :
+    public class MultiplicativeGroup<T>(params T[] elements) : Group<T>(elements) where T :
         IMultiplyOperators<T, T, T>, IMultiplicativeIdentity<T, T>, IInversionOperator<T, T>, IEquatable<T>
     {
         protected override T Op(T left, T right) => left * right;

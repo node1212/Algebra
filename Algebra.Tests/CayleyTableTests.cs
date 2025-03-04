@@ -27,8 +27,7 @@ namespace Algebra.Tests
             var inverses = ct.Header.ToDictionary(e => e, ct.GetInverse);
 
             var permutations = PermutationOf3Int.Generate();
-            var cayleyTable = new CayleyTable<PermutationOf3Int>(permutations);
-            cayleyTable.Fill((e1, e2) => e1 * e2);
+            var cayleyTable = new CayleyTable<PermutationOf3Int>((e1, e2) => e1 * e2, permutations);
             static string converter(string s) => s switch
             {
                 "(1 2 3)" => "e ",

@@ -5,16 +5,23 @@
         private readonly T[] _header;
         private readonly Dictionary<T, int> _headerInverse = [];
         private readonly T[,] _table;
-        private List<(NeutralElementType Type, T Element)> _identities;
+        private readonly List<(NeutralElementType Type, T Element)> _identities;
 
-        public CayleyTable(params T[] header)
-            : this(new T[header.Length, header.Length], header) { }
+        public CayleyTable(Func<T, T, T> func, params T[] header)
+            : this(func, null, header) { }
 
         public CayleyTable(T[,] table, params T[] header)
+            : this(null, table, header) { }
+
+        private CayleyTable(Func<T, T, T> func, T[,] table, params T[] header)
         {
             _header = header;
-            _table = table;
-            if (header.Length != table.GetLength(0) || header.Length != table.GetLength(1))
+            _table = table ?? (new T[_header.Length, _header.Length]);
+            if (func != null)
+            {
+                Fill(func);
+            }
+            if (_header.Length != _table.GetLength(0) || _header.Length != _table.GetLength(1))
             {
                 throw new ArgumentException("Table dimensions do not match header length.");
             }
@@ -22,9 +29,17 @@
             {
                 _headerInverse[header[i]] = i;
             }
-            if (table.Length != 0)
+            _identities = [.. GetIdentities()];
+
+            void Fill(Func<T, T, T> func)
             {
-                _identities = [.. GetIdentities()];
+                for (var i = 0; i < Order; i++)
+                {
+                    for (var j = 0; j < Order; j++)
+                    {
+                        _table[i, j] = func(_header[i], _header[j]);
+                    }
+                }
             }
         }
 
@@ -98,18 +113,6 @@
 
         public T GetInverse(T element) => GetInverses(element).Single(e => e.Type == InverseElementType.TwoSided).Element;
         #endregion
-
-        public void Fill(Func<T, T, T> sumOrProductFunc)
-        {
-            for (var i = 0; i < Order; i++)
-            {
-                for (var j = 0; j < Order; j++)
-                {
-                    _table[i, j] = sumOrProductFunc(_header[i], _header[j]);
-                }
-            }
-            _identities = [.. GetIdentities()];
-        }
 
         public T this[T left, T right] => _table[_headerInverse[left], _headerInverse[right]];
 
