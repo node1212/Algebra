@@ -115,7 +115,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf6Int, PermutationOf6Int>,
         IInversionOperator<PermutationOf6Int, PermutationOf6Int>,
-        IPermutationsGenerator<PermutationOf6Int, int>,
         IParsable<PermutationOf6Int>
     {
         public static bool operator ==(PermutationOf6Int left, PermutationOf6Int right) => EqualityOperator(left, right);
@@ -134,8 +133,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf6Int operator ~(PermutationOf6Int value) => Inverse(value);
 
-        public static PermutationOf6Int[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf6Int(e));
-
         public static PermutationOf6Int Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToInt32, MultiplicativeIdentity);
 
@@ -150,7 +147,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf7Int, PermutationOf7Int>,
         IInversionOperator<PermutationOf7Int, PermutationOf7Int>,
-        IPermutationsGenerator<PermutationOf7Int, int>,
         IParsable<PermutationOf7Int>
     {
         public static bool operator ==(PermutationOf7Int left, PermutationOf7Int right) => EqualityOperator(left, right);
@@ -169,8 +165,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf7Int operator ~(PermutationOf7Int value) => Inverse(value);
 
-        public static PermutationOf7Int[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf7Int(e));
-
         public static PermutationOf7Int Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToInt32, MultiplicativeIdentity);
 
@@ -185,7 +179,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf8Int, PermutationOf8Int>,
         IInversionOperator<PermutationOf8Int, PermutationOf8Int>,
-        IPermutationsGenerator<PermutationOf8Int, int>,
         IParsable<PermutationOf8Int>
     {
         public static bool operator ==(PermutationOf8Int left, PermutationOf8Int right) => EqualityOperator(left, right);
@@ -204,8 +197,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf8Int operator ~(PermutationOf8Int value) => Inverse(value);
 
-        public static PermutationOf8Int[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf8Int(e));
-
         public static PermutationOf8Int Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToInt32, MultiplicativeIdentity);
 
@@ -220,7 +211,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf9Int, PermutationOf9Int>,
         IInversionOperator<PermutationOf9Int, PermutationOf9Int>,
-        IPermutationsGenerator<PermutationOf9Int, int>,
         IParsable<PermutationOf9Int>
     {
         public static bool operator ==(PermutationOf9Int left, PermutationOf9Int right) => EqualityOperator(left, right);
@@ -238,8 +228,6 @@ namespace Algebra.Core.Permutations.T4
         public static PermutationOf9Int MultiplicativeIdentity => new(AllowedValues);
 
         public static PermutationOf9Int operator ~(PermutationOf9Int value) => Inverse(value);
-
-        public static PermutationOf9Int[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf9Int(e));
 
         public static PermutationOf9Int Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToInt32, MultiplicativeIdentity);
@@ -360,7 +348,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf6Char, PermutationOf6Char>,
         IInversionOperator<PermutationOf6Char, PermutationOf6Char>,
-        IPermutationsGenerator<PermutationOf6Char, char>,
         IParsable<PermutationOf6Char>
     {
         public static bool operator ==(PermutationOf6Char left, PermutationOf6Char right) => EqualityOperator(left, right);
@@ -379,8 +366,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf6Char operator ~(PermutationOf6Char value) => Inverse(value);
 
-        public static PermutationOf6Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf6Char(e));
-
         public static PermutationOf6Char Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);
 
@@ -395,7 +380,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf7Char, PermutationOf7Char>,
         IInversionOperator<PermutationOf7Char, PermutationOf7Char>,
-        IPermutationsGenerator<PermutationOf7Char, char>,
         IParsable<PermutationOf7Char>
     {
         public static bool operator ==(PermutationOf7Char left, PermutationOf7Char right) => EqualityOperator(left, right);
@@ -414,8 +398,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf7Char operator ~(PermutationOf7Char value) => Inverse(value);
 
-        public static PermutationOf7Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf7Char(e));
-
         public static PermutationOf7Char Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);
 
@@ -430,7 +412,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf8Char, PermutationOf8Char>,
         IInversionOperator<PermutationOf8Char, PermutationOf8Char>,
-        IPermutationsGenerator<PermutationOf8Char, char>,
         IParsable<PermutationOf8Char>
     {
         public static bool operator ==(PermutationOf8Char left, PermutationOf8Char right) => EqualityOperator(left, right);
@@ -449,8 +430,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf8Char operator ~(PermutationOf8Char value) => Inverse(value);
 
-        public static PermutationOf8Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf8Char(e));
-
         public static PermutationOf8Char Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);
 
@@ -465,7 +444,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf9Char, PermutationOf9Char>,
         IInversionOperator<PermutationOf9Char, PermutationOf9Char>,
-        IPermutationsGenerator<PermutationOf9Char, char>,
         IParsable<PermutationOf9Char>
     {
         public static bool operator ==(PermutationOf9Char left, PermutationOf9Char right) => EqualityOperator(left, right);
@@ -484,8 +462,6 @@ namespace Algebra.Core.Permutations.T4
 
         public static PermutationOf9Char operator ~(PermutationOf9Char value) => Inverse(value);
 
-        public static PermutationOf9Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf9Char(e));
-
         public static PermutationOf9Char Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);
 
@@ -500,7 +476,6 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf10Char, PermutationOf10Char>,
         IInversionOperator<PermutationOf10Char, PermutationOf10Char>,
-        IPermutationsGenerator<PermutationOf10Char, char>,
         IParsable<PermutationOf10Char>
     {
         public static bool operator ==(PermutationOf10Char left, PermutationOf10Char right) => EqualityOperator(left, right);
@@ -518,8 +493,6 @@ namespace Algebra.Core.Permutations.T4
         public static PermutationOf10Char MultiplicativeIdentity => new(AllowedValues);
 
         public static PermutationOf10Char operator ~(PermutationOf10Char value) => Inverse(value);
-
-        public static PermutationOf10Char[] Generate() => Generate(MultiplicativeIdentity, e => new PermutationOf10Char(e));
 
         public static PermutationOf10Char Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.ToChar, MultiplicativeIdentity);

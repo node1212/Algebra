@@ -30,7 +30,13 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<<#=name#>>,
         IMultiplicativeIdentity<Permutation<#=suffix#>, Permutation<#=suffix#>>,
         IInversionOperator<Permutation<#=suffix#>, Permutation<#=suffix#>>,
+<#          if (i <= 5)
+            {
+#>
         IPermutationsGenerator<Permutation<#=suffix#>, <#=name#>>,
+<#
+            }
+#>
         IParsable<Permutation<#=suffix#>>
     {
         public static bool operator ==(Permutation<#=suffix#> left, Permutation<#=suffix#> right) => EqualityOperator(left, right);
@@ -49,8 +55,14 @@ namespace Algebra.Core.Permutations.T4
 
         public static Permutation<#=suffix#> operator ~(Permutation<#=suffix#> value) => Inverse(value);
 
+<#          if (i <= 5)
+            {
+#>
         public static Permutation<#=suffix#>[] Generate() => Generate(MultiplicativeIdentity, e => new Permutation<#=suffix#>(e));
 
+<#
+            }
+#>
         public static Permutation<#=suffix#> Parse(string s, IFormatProvider provider = null) =>
             Parse(s, FromCharConverter.To<#=fullName#>, MultiplicativeIdentity);
 
