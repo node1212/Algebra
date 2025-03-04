@@ -28,7 +28,7 @@
             }
         }
 
-        public IEnumerable<T> Header => _header;
+        public T[] Header => _header;
 
         public int Order => _header.Length;
 
