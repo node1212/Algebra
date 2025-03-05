@@ -2,9 +2,12 @@
 
 namespace Algebra.Core
 {
-    public abstract class Semigroup<T>(params T[] elements) : Magma<T>(elements) where T:
-        IEquatable<T>
+    public class Semigroup<T> : Magma<T> where T : IEquatable<T>
     {
+        public Semigroup(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+
+        public Semigroup(T[] elements) : base(elements) { }
+
         public override bool IsValid => IsClosed && IsAssociative;
     }
 

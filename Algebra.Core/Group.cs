@@ -2,42 +2,21 @@
 
 namespace Algebra.Core
 {
-    public abstract class Group<T>(params T[] elements) : Monoid<T>(elements) where T :
-        IEquatable<T>
+    public abstract class Group<T> : Monoid<T> where T : IEquatable<T>
     {
-        protected abstract T Inverse(T element);
+        public Group(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+
+        public Group(T[] elements) : base(elements) { }
 
         public override bool IsValid => base.IsValid && HasInverseElement;
 
-        private bool HasInverseElement
-        {
-            get
-            {
-                foreach (var a in Elements)
-                {
-                    if (!Elements.Contains(Inverse(a), EqualityComparer))
-                    {
-                        return false;
-                    }
-                }
-                return true;
-            }
-        }
+        protected virtual T Inverse(T element) => _cayleyTable.GetInverse(element);
 
-        public bool IsSubgroup(params T[] elements)
-        {
-            for (var i = 0; i < elements.Length; i++)
-            {
-                for (var j = 0; j < elements.Length; j++)
-                {
-                    if (!elements.Contains(Op(elements[i], Inverse(elements[j])), EqualityComparer))
-                    {
-                        return false;
-                    }
-                }
-            }
-            return true;
-        }
+        private bool HasInverseElement =>
+            Elements.All(a => Elements.Contains(Inverse(a), EqualityComparer));
+
+        public bool HasSubgroup(params T[] elements) =>
+            Elements.All(a => elements.Contains(Op(a, Inverse(a)), EqualityComparer));
     }
 
     public class AdditiveGroup<T>(params T[] elements) : Group<T>(elements) where T :
