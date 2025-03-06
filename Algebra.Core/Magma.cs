@@ -1,31 +1,46 @@
 ﻿using System.Numerics;
+using Algebra.Core.Strategies;
 
 namespace Algebra.Core
 {
-    public class Magma<T> : Algebra<T> where T : IEquatable<T>
+    public abstract class MagmaBase<TE, TS> : Algebra<TE>
+        where TE : IEquatable<TE>
+        where TS : IOperationStrategy<TE>
     {
-        protected readonly CayleyTable<T> _cayleyTable;
+        protected readonly CayleyTable<TE> _cayleyTable;
+        protected TS _strategy;
 
-        public Magma(CayleyTable<T> cayleyTable) => _cayleyTable = cayleyTable;
+        public MagmaBase(CayleyTable<TE> cayleyTable, TS strategy)
+        {
+            _strategy = strategy;
+            _cayleyTable = cayleyTable;
+        }
 
-        public Magma(T[] elements) => _cayleyTable = new CayleyTable<T>(Op, elements);
+        public MagmaBase(TE[] elements, TS strategy)
+        {
+            _strategy = strategy;
+            _cayleyTable = new CayleyTable<TE>(Op, elements);
+        }
 
-        protected override T[] Elements => _cayleyTable.Header;
+        protected override TE[] Elements => _cayleyTable.Header;
 
-        protected override T Op(T left, T right) => _cayleyTable[left, right];
+        protected override TE Op(TE left, TE right) => _strategy.Op(left, right);
 
         public override bool IsValid => IsClosed;
     }
 
-    public class AdditiveMagma<T>(params T[] elements) : Magma<T>(elements) where T :
-        IAdditionOperators<T, T, T>, IEquatable<T>
-    {
-        protected override T Op(T left, T right) => left + right;
-    }
+    public class Magma<TE>(CayleyTable<TE> cayleyTable) :
+        MagmaBase<TE, IOperationStrategy<TE>>(cayleyTable, Strategy.CayleyTable(cayleyTable))
+        where TE : IEquatable<TE>
+    { }
 
-    public class MultiplicativeMagma<T>(params T[] elements) : Magma<T>(elements) where T :
-        IMultiplyOperators<T, T, T>, IEquatable<T>
-    {
-        protected override T Op(T left, T right) => left * right;
-    }
+    public class AdditiveMagma<TE>(params TE[] elements) :
+        MagmaBase<TE, IOperationStrategy<TE>>(elements, Strategy.Additive<TE>())
+        where TE : IAdditionOperators<TE, TE, TE>, IEquatable<TE>
+    { }
+
+    public class MultiplicativeMagma<TE>(params TE[] elements) :
+        MagmaBase<TE, IOperationStrategy<TE>>(elements, Strategy.Multiplicative<TE>())
+        where TE : IMultiplyOperators<TE, TE, TE>, IEquatable<TE>
+    { }
 }
