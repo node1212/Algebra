@@ -18,8 +18,30 @@ namespace Algebra.Core
         private bool HasInverseElement =>
             Elements.All(a => Elements.Contains(Inverse(a), EqualityComparer));
 
-        public bool HasSubgroup(params TE[] elements) =>
-            Elements.All(a => elements.Contains(Op(a, Inverse(a)), EqualityComparer));
+        public bool IsSubgroup(params TE[] elements) =>
+            (from a in elements
+             from b in elements
+             select elements.Contains(Op(a, Inverse(b)), EqualityComparer)).All(e => e);
+
+        public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.IsSubgroup(Elements);
+
+        public bool IsTrivialSubgroup(params TE[] elements) =>
+            IsSubgroup(elements) && (elements.SetEquals([Identity]) || elements.SetEquals(Elements));
+
+        public TE[] GetCoset(TE a, CosetType type, params TE[] subgroup)
+        {
+            if (!Elements.Contains(a, EqualityComparer))
+            {
+                throw new ArgumentException("Element does not belong to the group", nameof(a));
+            }
+            if (!IsSubgroup(subgroup))
+            {
+                throw new ArgumentException("Elements are not a subgroup of the group", nameof(subgroup));
+            }
+            return type == CosetType.Left
+                ? [.. subgroup.Select(h => Op(a, h))]
+                : [.. subgroup.Select(h => Op(h, a))];
+        }
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :

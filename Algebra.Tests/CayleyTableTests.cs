@@ -1,18 +1,14 @@
-﻿using Algebra.Core;
+﻿using System.Text;
+using Algebra.Core;
 using Algebra.Core.Permutations.T4;
+using FluentAssertions;
 
 namespace Algebra.Tests
 {
     public class CayleyTableTests
     {
-        // TODO identity tests -> new tests
-        // TODO inverses tests -> new tests
-        // TODO shared test data
-        [Fact]
-        public void CayleyTable_ShouldBe_Printable()
-        {
-            var ct = new CayleyTable<char>(new char[,]
-            {//    a    b    c    d    e    f
+        private static readonly CayleyTable<char> CayleyTable = new(new char[,]
+        {//    a    b    c    d    e    f
                 { 'f', 'd', 'a', 'e', 'b', 'c' },//a
                 { 'e', 'c', 'b', 'f', 'a', 'd' },//b
                 { 'a', 'b', 'c', 'd', 'e', 'f' },//c
@@ -21,13 +17,28 @@ namespace Algebra.Tests
                 { 'c', 'e', 'f', 'b', 'd', 'a' },//f
             }, 'a', 'b', 'c', 'd', 'e', 'f');
 
-            Assert.Single(ct.GetIdentities());
-            Assert.Equal('c', ct.Identity);
+        [Fact]
+        public void Identity_ShouldBe_Found()
+        {
+            var identity = CayleyTable.GetIdentities().Single();
+            identity.Type.Should().Be(NeutralElementType.TwoSided);
+            CayleyTable.Identity.Should().Be('c');
+        }
 
-            var inverses = ct.Header.ToDictionary(e => e, ct.GetInverse);
+        [Fact]
+        public void Inverses_ShouldBe_Found()
+        {
+            var inverses = CayleyTable.Header.ToDictionary(e => e, CayleyTable.GetInverse);
+            inverses['a'].Should().Be('f');
+            inverses['f'].Should().Be('a');
+        }
 
+        [Fact]
+        public void CayleyTable_ShouldBe_Printable()
+        {
             var permutations = PermutationOf3Int.Generate();
             var cayleyTable = new CayleyTable<PermutationOf3Int>((e1, e2) => e1 * e2, permutations);
+
             static string converter(string s) => s switch
             {
                 "(1 2 3)" => "e ",
@@ -38,7 +49,11 @@ namespace Algebra.Tests
                 "(3 2 1)" => "σ₃",
                 _ => throw new InvalidOperationException("Should not be here"),
             };
-            cayleyTable.Print(converter: converter);
+            var sb = new StringBuilder();
+
+            cayleyTable.Print(s => sb.Append(s), converter);
+
+            sb.Length.Should().BeGreaterThan(0);
         }
     }
 }

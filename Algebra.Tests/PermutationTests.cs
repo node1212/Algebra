@@ -1,4 +1,5 @@
 ﻿using Algebra.Core.Permutations.T4;
+using FluentAssertions;
 
 namespace Algebra.Tests
 {
@@ -42,13 +43,12 @@ namespace Algebra.Tests
             var sigma2 = new PermutationOf3Int(1, 3, 2); // (23)
             var sigma3 = new PermutationOf3Int(3, 2, 1); // (13)
 
-            Assert.Equal(rho2, rho1 * rho1);
-            Assert.Equal(sigma2, sigma1 * rho1);
-            Assert.Equal(sigma3, sigma1 * rho1 * rho1);
-
-            Assert.Equal(e, sigma1 * sigma1);
-            Assert.Equal(e, rho1 * rho1 * rho1);
-            Assert.Equal(sigma1 * rho1 * rho1, rho1 * sigma1);
+            (rho1 * rho1).Should().Be(rho2);
+            (sigma1 * rho1).Should().Be(sigma2);
+            (sigma1 * rho1 * rho1).Should().Be(sigma3);
+            (sigma1 * sigma1).Should().Be(e);
+            (rho1 * rho1 * rho1).Should().Be(e);
+            (rho1 * sigma1).Should().Be(sigma1 * rho1 * rho1);
         }
 
         [Fact]
@@ -61,12 +61,12 @@ namespace Algebra.Tests
             var sigma2 = PermutationOf3Int.Parse("(23)").ToString(); // 1 3 2
             var sigma3 = PermutationOf3Int.Parse("(13)").ToString(); // 3 2 1
 
-            Assert.Equal("(1 2 3)", e);
-            Assert.Equal("(2 3 1)", rho1);
-            Assert.Equal("(3 1 2)", rho2);
-            Assert.Equal("(2 1 3)", sigma1);
-            Assert.Equal("(1 3 2)", sigma2);
-            Assert.Equal("(3 2 1)", sigma3);
+            e.Should().Be("(1 2 3)");
+            rho1.Should().Be("(2 3 1)");
+            rho2.Should().Be("(3 1 2)");
+            sigma1.Should().Be("(2 1 3)");
+            sigma2.Should().Be("(1 3 2)");
+            sigma3.Should().Be("(3 2 1)");
         }
     }
 }

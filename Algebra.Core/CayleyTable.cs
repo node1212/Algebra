@@ -89,6 +89,10 @@
         #region Inverse
         public IEnumerable<(InverseElementType, T)> GetInverses(T element, T neutralElement, Func<InverseElementType, bool> filter = null)
         {
+            if (!_header.Contains(element))
+            {
+                throw new ArgumentException($"Element {element} does not belong to the table");
+            }
             filter ??= _ => true;
             foreach (var probe in _header)
             {

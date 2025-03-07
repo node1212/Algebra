@@ -20,6 +20,12 @@
         TwoSided
     }
 
+    public enum CosetType
+    {
+        Left,
+        Right
+    }
+
     public static class ArrayExtensions
     {
         public static IEnumerable<T> GetRow<T>(this T[,] array, int row)
@@ -52,6 +58,13 @@
             {
                 yield return array.GetColumn(j);
             }
+        }
+
+        public static bool SetEquals<T>(this IEnumerable<T> left, IEnumerable<T> right) where T : IEquatable<T>
+        {
+            var leftHashSet = left.ToHashSet();
+            var rightHashSet = right.ToHashSet();
+            return leftHashSet.Count == rightHashSet.Count && leftHashSet.All(rightHashSet.Contains);
         }
     }
 }
