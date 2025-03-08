@@ -16,7 +16,7 @@ namespace Algebra.Core
         public virtual TE Identity => _strategy.Identity;
 
         private bool HasNeutralElement =>
-            Elements.All(a => EqualityComparer.Equals(Op(Identity, a), a) && EqualityComparer.Equals(Op(a, Identity), a));
+            Elements.All(a => Op(Identity, a).Equals(a) && Op(a, Identity).Equals(a));
     }
 
     public class Monoid<TE>(CayleyTable<TE> cayleyTable) :

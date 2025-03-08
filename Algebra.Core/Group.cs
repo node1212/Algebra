@@ -16,12 +16,14 @@ namespace Algebra.Core
         protected virtual TE Inverse(TE element) => _cayleyTable.GetInverse(element);
 
         private bool HasInverseElement =>
-            Elements.All(a => Elements.Contains(Inverse(a), EqualityComparer));
+            Elements.All(a => Elements.Contains(Inverse(a)));
 
-        public bool IsSubgroup(params TE[] elements) =>
+        public bool IsSubgroup(params TE[] elements) => IsSubgroup(new HashSet<TE>(elements));
+
+        private bool IsSubgroup(HashSet<TE> elements) =>
             (from a in elements
              from b in elements
-             select elements.Contains(Op(a, Inverse(b)), EqualityComparer)).All(e => e);
+             select elements.Contains(Op(a, Inverse(b)))).Always();
 
         public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.IsSubgroup(Elements);
 
@@ -30,7 +32,7 @@ namespace Algebra.Core
 
         public TE[] GetCoset(TE a, CosetType type, params TE[] subgroup)
         {
-            if (!Elements.Contains(a, EqualityComparer))
+            if (!Elements.Contains(a))
             {
                 throw new ArgumentException("Element does not belong to the group", nameof(a));
             }

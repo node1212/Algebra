@@ -22,7 +22,7 @@ namespace Algebra.Core
             _cayleyTable = new CayleyTable<TE>(Op, elements);
         }
 
-        protected override TE[] Elements => _cayleyTable.Header;
+        protected override HashSet<TE> Elements => [.. _cayleyTable.Header];
 
         protected override TE Op(TE left, TE right) => _strategy.Op(left, right);
 

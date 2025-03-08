@@ -43,7 +43,7 @@
             }
         }
 
-        public T[] Header => _header;
+        public HashSet<T> Header => [.. _header];
 
         public int Order => _header.Length;
 
@@ -78,9 +78,9 @@
 
             IEnumerable<(NeutralElementType Type, T Element)> GetQuery(
                 IEnumerable<IEnumerable<T>> rowsOrColumns, NeutralElementType identityType) => rowsOrColumns
-                    .Select((column, k) => (column, k))
-                    .Where(x => x.column.SequenceEqual(_header))
-                    .Select(x => (identityType, _header[x.k]));
+                    .Select((column, k) => (Column: column, Index: k))
+                    .Where(x => x.Column.SequenceEqual(_header))
+                    .Select(x => (identityType, _header[x.Index]));
         }
 
         public T Identity => _identities.Single(x => x.Type == NeutralElementType.TwoSided).Element;
@@ -89,7 +89,7 @@
         #region Inverse
         public IEnumerable<(InverseElementType, T)> GetInverses(T element, T neutralElement, Func<InverseElementType, bool> filter = null)
         {
-            if (!_header.Contains(element))
+            if (!_headerInverse.ContainsKey(element)) // fast search, O(1)
             {
                 throw new ArgumentException($"Element {element} does not belong to the table");
             }
