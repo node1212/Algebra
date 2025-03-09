@@ -16,16 +16,16 @@
         private CayleyTable(Func<T, T, T> func, T[,] table, params T[] header)
         {
             _header = header;
-            _table = table ?? (new T[_header.Length, _header.Length]);
+            _table = table ?? (new T[Order, Order]);
             if (func != null)
             {
                 Fill(func);
             }
-            if (_header.Length != _table.GetLength(0) || _header.Length != _table.GetLength(1))
+            if (Order != _table.GetLength(0) || Order != _table.GetLength(1))
             {
                 throw new ArgumentException("Table dimensions do not match header length.");
             }
-            for (var i = 0; i < header.Length; i++)
+            for (var i = 0; i < Order; i++)
             {
                 _headerInverse[header[i]] = i;
             }

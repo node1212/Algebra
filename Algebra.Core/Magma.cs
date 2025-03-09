@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Generic;
+using System.Numerics;
 using Algebra.Core.Strategies;
 
 namespace Algebra.Core
@@ -22,7 +23,7 @@ namespace Algebra.Core
             _cayleyTable = new CayleyTable<TE>(Op, elements);
         }
 
-        protected override HashSet<TE> Elements => [.. _cayleyTable.Header];
+        protected override IEnumerable<TE> Elements => _cayleyTable.Header;
 
         protected override TE Op(TE left, TE right) => _strategy.Op(left, right);
 

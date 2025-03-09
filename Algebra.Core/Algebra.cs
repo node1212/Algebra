@@ -2,11 +2,11 @@
 {
     public abstract class Algebra<T> where T : IEquatable<T>
     {
-        protected abstract HashSet<T> Elements { get; }
+        protected abstract IEnumerable<T> Elements { get; }
 
         protected abstract T Op(T left, T right);
 
-        public int Order => Elements.Count;
+        public int Order => Elements.Count();
 
         /// <summary>
         /// Chained: <code>Elements
@@ -18,10 +18,16 @@
              from b in Elements
              select Elements.Contains(Op(a, b))).Always();
 
-        public bool IsCommutative =>
-            (from a in Elements
-             from b in Elements
-             select Op(a, b).Equals(Op(b, a))).Always();
+        public bool IsCommutative
+        {
+            get
+            {
+                var elements = Elements.ToArray();
+                return (from i in Enumerable.Range(0, Order - 1)
+                        from j in Enumerable.Range(i + 1, Order)
+                        select Op(elements[i], elements[j]).Equals(Op(elements[j], elements[i]))).Always();
+            }
+        }
 
         public bool IsAbelian => IsCommutative;
 

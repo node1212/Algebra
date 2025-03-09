@@ -20,7 +20,7 @@ namespace Algebra.Core
 
         public bool IsSubgroup(params TE[] elements) => IsSubgroup(new HashSet<TE>(elements));
 
-        private bool IsSubgroup(HashSet<TE> elements) =>
+        private bool IsSubgroup(IEnumerable<TE> elements) =>
             (from a in elements
              from b in elements
              select elements.Contains(Op(a, Inverse(b)))).Always();
@@ -44,6 +44,8 @@ namespace Algebra.Core
                 ? [.. subgroup.Select(h => Op(a, h))]
                 : [.. subgroup.Select(h => Op(h, a))];
         }
+
+        // TODO: normal subgroup, factor group, searching for subgroups
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :
