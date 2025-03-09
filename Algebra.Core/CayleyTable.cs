@@ -1,11 +1,13 @@
-﻿namespace Algebra.Core
+﻿using System.Collections.Immutable;
+
+namespace Algebra.Core
 {
     public class CayleyTable<T> where T : IEquatable<T>
     {
         private readonly T[] _header;
-        private readonly Dictionary<T, int> _headerInverse = [];
+        private readonly ImmutableDictionary<T, int> _headerInverse;
         private readonly T[,] _table;
-        private readonly List<(NeutralElementType Type, T Element)> _identities;
+        private readonly ImmutableList<(NeutralElementType Type, T Element)> _identities;
 
         public CayleyTable(Func<T, T, T> func, params T[] header)
             : this(func, null, header) { }
@@ -25,10 +27,9 @@
             {
                 throw new ArgumentException("Table dimensions do not match header length.");
             }
-            for (var i = 0; i < Order; i++)
-            {
-                _headerInverse[header[i]] = i;
-            }
+            _headerInverse = ImmutableDictionary.CreateRange(
+                header.Select((x, i) => new KeyValuePair<T, int>(x, i)));
+
             _identities = [.. GetIdentities()];
 
             void Fill(Func<T, T, T> func)
@@ -43,7 +44,7 @@
             }
         }
 
-        public HashSet<T> Header => [.. _header];
+        public ImmutableHashSet<T> Header => ImmutableHashSet.Create(_header);
 
         public int Order => _header.Length;
 

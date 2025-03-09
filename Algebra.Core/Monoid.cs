@@ -11,11 +11,11 @@ namespace Algebra.Core
 
         public MonoidBase(TE[] elements, TS strategy) : base(elements, strategy) { }
 
-        public override bool IsValid => base.IsValid & HasNeutralElement;
+        public override bool IsValid() => base.IsValid() & HasNeutralElement();
 
         public virtual TE Identity => _strategy.Identity;
 
-        private bool HasNeutralElement =>
+        private bool HasNeutralElement() =>
             Elements.All(a => Op(Identity, a).Equals(a) && Op(a, Identity).Equals(a));
     }
 

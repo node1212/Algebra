@@ -1,4 +1,5 @@
-﻿using System.Numerics;
+﻿using System.Collections.Immutable;
+using System.Numerics;
 using Algebra.Core.Strategies;
 
 namespace Algebra.Core
@@ -11,41 +12,65 @@ namespace Algebra.Core
 
         public GroupBase(TE[] elements, TS strategy) : base(elements, strategy) { }
 
-        public override bool IsValid => base.IsValid && HasInverseElement;
+        public override bool IsValid() => base.IsValid() && HasInverseElement();
 
         protected virtual TE Inverse(TE element) => _cayleyTable.GetInverse(element);
 
-        private bool HasInverseElement =>
+        private bool HasInverseElement() =>
             Elements.All(a => Elements.Contains(Inverse(a)));
 
-        public bool IsSubgroup(params TE[] elements) => IsSubgroup(new HashSet<TE>(elements));
+        public bool HasSubgroup(params TE[] elements) => HasSubgroup(elements.ToImmutableHashSet());
 
-        private bool IsSubgroup(IEnumerable<TE> elements) =>
-            (from a in elements
-             from b in elements
-             select elements.Contains(Op(a, Inverse(b)))).Always();
+        private bool HasSubgroup(ImmutableHashSet<TE> elements)
+        {
+            if (!elements.IsSubsetOf(Elements))
+            {
+                return false;
+            }
+            return (from a in elements
+                    from b in elements
+                    select elements.Contains(Op(a, Inverse(b)))).Always();
+        }
 
-        public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.IsSubgroup(Elements);
+        public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.HasSubgroup(Elements);
 
-        public bool IsTrivialSubgroup(params TE[] elements) =>
-            IsSubgroup(elements) && (elements.SetEquals([Identity]) || elements.SetEquals(Elements));
+        public bool HasTrivialSubgroup(params TE[] elements) =>
+            elements.SetEquals([Identity]) || elements.SetEquals(Elements);
 
-        public TE[] GetCoset(TE a, CosetType type, params TE[] subgroup)
+        public IEnumerable<TE> GetCoset(TE a, CosetType type, params TE[] subgroup)
         {
             if (!Elements.Contains(a))
             {
-                throw new ArgumentException("Element does not belong to the group", nameof(a));
+                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
             }
-            if (!IsSubgroup(subgroup))
+            if (!HasSubgroup(subgroup))
             {
-                throw new ArgumentException("Elements are not a subgroup of the group", nameof(subgroup));
+                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
             }
             return type == CosetType.Left
-                ? [.. subgroup.Select(h => Op(a, h))]
-                : [.. subgroup.Select(h => Op(h, a))];
+                ? subgroup.Select(h => Op(a, h))
+                : subgroup.Select(h => Op(h, a));
         }
 
-        // TODO: normal subgroup, factor group, searching for subgroups
+        public IEnumerable<IEnumerable<TE>> FindNonTrivialSubgroups()
+        {
+            var elements = Elements.Where(e => !e.Equals(Identity));
+            for (var i = 1; i < Order - 1; i++)
+            {
+                var combinations = elements.GetCombinations(i);
+                foreach (var combination in combinations)
+                {
+                    var candidate = new List<TE>(i + 1) { Identity };
+                    candidate.AddRange(combination);
+                    if (HasSubgroup(candidate.ToImmutableHashSet()))
+                    {
+                        yield return candidate;
+                    }
+                }
+            }
+        }
+
+        // TODO: normal subgroup, factor group
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :

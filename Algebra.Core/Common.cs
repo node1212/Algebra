@@ -115,5 +115,27 @@
         }
 
         public static bool Always(this IEnumerable<bool> source) => source.All(v => v);
+
+        public static List<List<T>> GetCombinations<T>(this IEnumerable<T> elements, int combinationSize)
+        {
+            var result = new List<List<T>>();
+            GenerateCombinations([.. elements], combinationSize, 0, [], result);
+            return result;
+
+            static void GenerateCombinations(T[] elements, int combinationSize, int start, List<T> currentCombination, List<List<T>> result)
+            {
+                if (currentCombination.Count == combinationSize)
+                {
+                    result.Add([.. currentCombination]);
+                    return;
+                }
+                for (int i = start; i < elements.Length; i++)
+                {
+                    currentCombination.Add(elements[i]);
+                    GenerateCombinations(elements, combinationSize, i + 1, currentCombination, result);
+                    currentCombination.RemoveAt(currentCombination.Count - 1);
+                }
+            }
+        }
     }
 }

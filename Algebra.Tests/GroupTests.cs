@@ -6,12 +6,19 @@ namespace Algebra.Tests
 {
     public class GroupTests
     {
+        private static readonly PermutationOf3Int e = PermutationOf3Int.MultiplicativeIdentity;
+        private static readonly PermutationOf3Int rho1 = new(2, 3, 1); // (123)
+        private static readonly PermutationOf3Int rho2 = new(3, 1, 2); // (132)
+        private static readonly PermutationOf3Int sigma1 = new(2, 1, 3); // (12)
+        private static readonly PermutationOf3Int sigma2 = new(1, 3, 2); // (23)
+        private static readonly PermutationOf3Int sigma3 = new(3, 2, 1); // (13)
+
         [Fact]
         public void Permutation4Group_Passes_Validation()
         {
             var S4 = new MultiplicativeGroup<PermutationOf4Char>(PermutationOf4Char.Generate());
 
-            S4.IsValid.Should().BeTrue();
+            S4.IsValid().Should().BeTrue();
         }
 
         [Fact]
@@ -19,58 +26,55 @@ namespace Algebra.Tests
         {
             var k4g = new Klein4Group();
 
-            k4g.IsValid.Should().BeTrue();
+            k4g.IsValid().Should().BeTrue();
         }
 
         [Fact]
         public void SubGroup_Tests()
         {
-            var e = PermutationOf3Int.MultiplicativeIdentity;
-            var rho1 = new PermutationOf3Int(2, 3, 1); // (123)
-            var rho2 = new PermutationOf3Int(3, 1, 2); // (132)
-            var sigma1 = new PermutationOf3Int(2, 1, 3); // (12)
-            var sigma2 = new PermutationOf3Int(1, 3, 2); // (23)
-            var sigma3 = new PermutationOf3Int(3, 2, 1); // (13)
-
             var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
 
-            S3.IsValid.Should().BeTrue();
+            S3.IsValid().Should().BeTrue();
 
-            S3.IsSubgroup(e).Should().BeTrue();
-            S3.IsTrivialSubgroup(e).Should().BeTrue();
+            S3.HasSubgroup(e).Should().BeTrue();
+            S3.HasTrivialSubgroup(e).Should().BeTrue();
 
-            S3.IsSubgroup(e, rho1, rho2).Should().BeTrue();
-            S3.IsTrivialSubgroup(e, rho1, rho2).Should().BeFalse();
+            S3.HasSubgroup(e, rho1, rho2).Should().BeTrue();
+            S3.HasTrivialSubgroup(e, rho1, rho2).Should().BeFalse();
 
-            S3.IsSubgroup(e, sigma1).Should().BeTrue();
-            S3.IsTrivialSubgroup(e, sigma1).Should().BeFalse();
+            S3.HasSubgroup(e, sigma1).Should().BeTrue();
+            S3.HasTrivialSubgroup(e, sigma1).Should().BeFalse();
 
-            S3.IsSubgroup(e, sigma2).Should().BeTrue();
-            S3.IsTrivialSubgroup(e, sigma2).Should().BeFalse();
+            S3.HasSubgroup(e, sigma2).Should().BeTrue();
+            S3.HasTrivialSubgroup(e, sigma2).Should().BeFalse();
 
-            S3.IsSubgroup(e, sigma3).Should().BeTrue();
-            S3.IsTrivialSubgroup(e, sigma3).Should().BeFalse();
+            S3.HasSubgroup(e, sigma3).Should().BeTrue();
+            S3.HasTrivialSubgroup(e, sigma3).Should().BeFalse();
 
-            S3.IsSubgroup(e, rho1, rho2, sigma1, sigma2, sigma3).Should().BeTrue();
-            S3.IsTrivialSubgroup(e, rho1, rho2, sigma1, sigma2, sigma3).Should().BeTrue();
+            S3.HasSubgroup(e, rho1, rho2, sigma1, sigma2, sigma3).Should().BeTrue();
+            S3.HasTrivialSubgroup(e, rho1, rho2, sigma1, sigma2, sigma3).Should().BeTrue();
 
-            S3.IsSubgroup(e, rho1).Should().BeFalse();
-            S3.IsSubgroup(e, rho2).Should().BeFalse();
-            S3.IsSubgroup(e, sigma1, sigma2).Should().BeFalse();
-            S3.IsSubgroup(e, sigma1, sigma3).Should().BeFalse();
-            S3.IsSubgroup(e, sigma2, sigma3).Should().BeFalse();
+            S3.HasSubgroup(e, rho1).Should().BeFalse();
+            S3.HasSubgroup(e, rho2).Should().BeFalse();
+            S3.HasSubgroup(e, sigma1, sigma2).Should().BeFalse();
+            S3.HasSubgroup(e, sigma1, sigma3).Should().BeFalse();
+            S3.HasSubgroup(e, sigma2, sigma3).Should().BeFalse();
+        }
+
+        [Fact]
+        public void FindSubgroups_Tests()
+        {
+            var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
+            var nonTrivialSubgroups = S3.FindNonTrivialSubgroups().ToArray();
+
+            nonTrivialSubgroups.Should().HaveCount(4);
+            nonTrivialSubgroups.Where(s => s.Count() == 2).Should().HaveCount(3);
+            nonTrivialSubgroups.Where(s => s.Count() == 3).Should().ContainSingle();
         }
 
         [Fact]
         public void Coset_Tests_PermutationOf3Int()
         {
-            var e = PermutationOf3Int.MultiplicativeIdentity;
-            var rho1 = new PermutationOf3Int(2, 3, 1); // (123)
-            var rho2 = new PermutationOf3Int(3, 1, 2); // (132)
-            var sigma1 = new PermutationOf3Int(2, 1, 3); // (12)
-            var sigma2 = new PermutationOf3Int(1, 3, 2); // (23)
-            var sigma3 = new PermutationOf3Int(3, 2, 1); // (13)
-
             var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
 
             var subgroup = new[] { e, rho1, rho2 };

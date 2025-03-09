@@ -11,7 +11,7 @@ namespace Algebra.Core
 
         public SemigroupBase(TE[] elements, TS strategy) : base(elements, strategy) { }
 
-        public override bool IsValid => IsClosed && IsAssociative;
+        public override bool IsValid() => IsClosed() && IsAssociative();
     }
 
     public class Semigroup<TE>(CayleyTable<TE> cayleyTable) :
