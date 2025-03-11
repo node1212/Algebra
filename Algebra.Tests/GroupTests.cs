@@ -12,7 +12,9 @@ namespace Algebra.Tests
         private static readonly PermutationOf3Int sigma1 = new(2, 1, 3); // (12)
         private static readonly PermutationOf3Int sigma2 = new(1, 3, 2); // (23)
         private static readonly PermutationOf3Int sigma3 = new(3, 2, 1); // (13)
+
         private static readonly MultiplicativeGroup<PermutationOf3Int> S3 = new(e, rho1, rho2, sigma1, sigma2, sigma3);
+        private static readonly Klein4Group k4g = new();
 
         [Fact]
         public void Permutation4Group_Passes_Validation()
@@ -77,6 +79,10 @@ namespace Algebra.Tests
             S3.HasNormalSubgroup(e, sigma1).Should().BeFalse();
             S3.HasNormalSubgroup(e, sigma2).Should().BeFalse();
             S3.HasNormalSubgroup(e, sigma3).Should().BeFalse();
+
+            k4g.HasNormalSubgroup('e', 'a').Should().BeTrue();
+            k4g.HasNormalSubgroup('e', 'b').Should().BeTrue();
+            k4g.HasNormalSubgroup('e', 'c').Should().BeTrue();
         }
 
         [Fact]
@@ -232,19 +238,78 @@ namespace Algebra.Tests
         }
 
         [Fact]
-        public void Coset_Tests_Klein4Group()
+        public void Klein4Group_Coset_Tests_e_a()
         {
-            var k4g = new Klein4Group();
-
             var subgroup = new[] { 'e', 'a' };
-            var eLeftCoset1 = k4g.GetCoset('e', CosetType.Left, subgroup);  // { e, a }
-            var eRightCoset1 = k4g.GetCoset('e', CosetType.Right, subgroup);// { e, a }
+
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);   // { e, a }
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup); // { e, a }
             var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);   // { e, a }
             var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup); // { e, a }
             var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);   // { b, c }
             var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup); // { b, c }
             var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);   // { b, c }
             var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup); // { b, c }
+
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            aLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            bLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            cLeftCoset.SetEquals(subgroup).Should().BeFalse();
+
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
+            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
+            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Klein4Group_Coset_Tests_e_b()
+        {
+            var subgroup = new[] { 'e', 'b' };
+
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup);
+            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);
+            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup);
+            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);
+            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup);
+            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);
+            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup);
+
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            aLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            bLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            cLeftCoset.SetEquals(subgroup).Should().BeFalse();
+
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
+            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
+            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
+        }
+
+        [Fact]
+        public void Klein4Group_Coset_Tests_e_c()
+        {
+            var subgroup = new[] { 'e', 'c' };
+
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup);
+            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);
+            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup);
+            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);
+            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup);
+            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);
+            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup);
+
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            aLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            bLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            cLeftCoset.SetEquals(subgroup).Should().BeTrue();
+
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
+            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
+            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
         }
     }
 }
