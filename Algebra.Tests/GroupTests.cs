@@ -12,6 +12,7 @@ namespace Algebra.Tests
         private static readonly PermutationOf3Int sigma1 = new(2, 1, 3); // (12)
         private static readonly PermutationOf3Int sigma2 = new(1, 3, 2); // (23)
         private static readonly PermutationOf3Int sigma3 = new(3, 2, 1); // (13)
+        private static readonly MultiplicativeGroup<PermutationOf3Int> S3 = new(e, rho1, rho2, sigma1, sigma2, sigma3);
 
         [Fact]
         public void Permutation4Group_Passes_Validation()
@@ -32,8 +33,6 @@ namespace Algebra.Tests
         [Fact]
         public void SubGroup_Tests()
         {
-            var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
-
             S3.IsValid().Should().BeTrue();
 
             S3.HasSubgroup(e).Should().BeTrue();
@@ -64,7 +63,6 @@ namespace Algebra.Tests
         [Fact]
         public void FindSubgroups_Tests()
         {
-            var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
             var nonTrivialSubgroups = S3.FindNonTrivialSubgroups().ToArray();
 
             nonTrivialSubgroups.Should().HaveCount(4);
@@ -73,10 +71,17 @@ namespace Algebra.Tests
         }
 
         [Fact]
+        public void NormalSubroups_Tests()
+        {
+            S3.HasNormalSubgroup(e, rho1, rho2).Should().BeTrue();
+            S3.HasNormalSubgroup(e, sigma1).Should().BeFalse();
+            S3.HasNormalSubgroup(e, sigma2).Should().BeFalse();
+            S3.HasNormalSubgroup(e, sigma3).Should().BeFalse();
+        }
+
+        [Fact]
         public void Coset_Tests_PermutationOf3Int()
         {
-            var S3 = new MultiplicativeGroup<PermutationOf3Int>(e, rho1, rho2, sigma1, sigma2, sigma3);
-
             var subgroup = new[] { e, rho1, rho2 };
             var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { e, rho1, rho2 }
             var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { e, rho1, rho2 }

@@ -37,6 +37,15 @@ namespace Algebra.Core
         public bool HasTrivialSubgroup(params TE[] elements) =>
             elements.SetEquals([Identity]) || elements.SetEquals(Elements);
 
+        public bool HasNormalSubgroup(params TE[] elements)
+        {
+            var candidate = elements.ToImmutableHashSet();
+            return HasSubgroup(candidate) &&
+            (from g in Elements
+             from n in candidate
+             select elements.Contains(Op(Op(g, n), Inverse(g)))).Always();
+        }
+
         public IEnumerable<TE> GetCoset(TE a, CosetType type, params TE[] subgroup)
         {
             if (!Elements.Contains(a))
@@ -57,12 +66,10 @@ namespace Algebra.Core
             var elements = Elements.Where(e => !e.Equals(Identity));
             for (var i = 1; i < Order - 1; i++)
             {
-                var combinations = elements.GetCombinations(i);
-                foreach (var combination in combinations)
+                var combinations = elements.GetCombinationsWithIdentity(i, Identity);
+                foreach (var candidate in combinations)
                 {
-                    var candidate = new List<TE>(i + 1) { Identity };
-                    candidate.AddRange(combination);
-                    if (HasSubgroup(candidate.ToImmutableHashSet()))
+                    if (HasSubgroup(candidate))
                     {
                         yield return candidate;
                     }

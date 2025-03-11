@@ -1,4 +1,6 @@
-﻿namespace Algebra.Core
+﻿using System.Collections.Immutable;
+
+namespace Algebra.Core
 {
     public interface IInversionOperator<TSelf, TResult>
         where TSelf : IInversionOperator<TSelf, TResult>
@@ -116,23 +118,29 @@
 
         public static bool Always(this IEnumerable<bool> source) => source.All(v => v);
 
-        public static List<List<T>> GetCombinations<T>(this IEnumerable<T> elements, int combinationSize)
+        public static List<ImmutableHashSet<T>> GetCombinationsWithIdentity<T>(this IEnumerable<T> elements, int combinationSize, T identity)
         {
-            var result = new List<List<T>>();
-            GenerateCombinations([.. elements], combinationSize, 0, [], result);
+            var result = new List<ImmutableHashSet<T>>();
+            RecursiveRoutine([.. elements], combinationSize, 0, [], identity, result);
             return result;
 
-            static void GenerateCombinations(T[] elements, int combinationSize, int start, List<T> currentCombination, List<List<T>> result)
+            static void RecursiveRoutine(
+                T[] elements,
+                int combinationSize,
+                int start,
+                List<T> currentCombination,
+                T identity,
+                List<ImmutableHashSet<T>> result)
             {
                 if (currentCombination.Count == combinationSize)
                 {
-                    result.Add([.. currentCombination]);
+                    result.Add([identity, .. currentCombination]);
                     return;
                 }
                 for (int i = start; i < elements.Length; i++)
                 {
                     currentCombination.Add(elements[i]);
-                    GenerateCombinations(elements, combinationSize, i + 1, currentCombination, result);
+                    RecursiveRoutine(elements, combinationSize, i + 1, currentCombination, identity, result);
                     currentCombination.RemoveAt(currentCombination.Count - 1);
                 }
             }
