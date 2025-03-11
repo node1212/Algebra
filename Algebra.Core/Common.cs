@@ -134,7 +134,9 @@ namespace Algebra.Core
             {
                 if (currentCombination.Count == combinationSize)
                 {
-                    result.Add([identity, .. currentCombination]);
+                    var tempSet = new HashSet<T> { identity };
+                    tempSet.UnionWith(currentCombination);
+                    result.Add(tempSet.ToImmutableHashSet());
                     return;
                 }
                 for (int i = start; i < elements.Length; i++)

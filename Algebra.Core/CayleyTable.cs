@@ -30,7 +30,7 @@ namespace Algebra.Core
             _headerInverse = ImmutableDictionary.CreateRange(
                 header.Select((x, i) => new KeyValuePair<T, int>(x, i)));
 
-            _identities = [.. GetIdentities()];
+            _identities = GetIdentities().ToImmutableList();
 
             void Fill(Func<T, T, T> func)
             {

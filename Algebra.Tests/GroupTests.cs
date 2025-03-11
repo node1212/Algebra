@@ -80,21 +80,155 @@ namespace Algebra.Tests
         }
 
         [Fact]
-        public void Coset_Tests_PermutationOf3Int()
+        public void S3_Coset_Tests_NormalSubgroup()
         {
             var subgroup = new[] { e, rho1, rho2 };
+
             var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { e, rho1, rho2 }
             var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { e, rho1, rho2 }
+
             var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { e, rho1, rho2 }
             var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { e, rho1, rho2 }
+
             var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { e, rho1, rho2 }
             var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { e, rho1, rho2 }
+
             var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
             var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+
             var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
             var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+
             var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
             var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            rho1LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            rho2LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
+
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeTrue();
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeTrue();
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue();
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue();
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue();
+        }
+
+        [Fact]
+        public void S3_Coset_Tests_e_sigma1()
+        {
+            var subgroup = new[] { e, sigma1 };
+
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { e, sigma1 }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { e, sigma1 }
+
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { rho1, sigma3 }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { rho1, sigma2 }
+
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { rho2, sigma2 }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { rho2, sigma3 }
+
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { e, sigma1 }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { e, sigma1 }
+
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { rho2, sigma2 }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { rho1, sigma2 }
+
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { rho1, sigma3 }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { rho2, sigma3 }
+
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
+
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue();
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse();
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse();
+        }
+
+        [Fact]
+        public void S3_Coset_Tests_e_sigma2()
+        {
+            var subgroup = new[] { e, sigma2 };
+
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { }
+
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { }
+
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { }
+
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { }
+
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { }
+
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { }
+
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma2LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
+
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse();
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue();
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse();
+        }
+
+        [Fact]
+        public void S3_Coset_Tests_e_sigma3()
+        {
+            var subgroup = new[] { e, sigma3 };
+
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { }
+
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { }
+
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { }
+
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { }
+
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { }
+
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { }
+
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            sigma3LeftCoset.SetEquals(subgroup).Should().BeTrue();
+
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse();
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse();
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue();
         }
 
         [Fact]
