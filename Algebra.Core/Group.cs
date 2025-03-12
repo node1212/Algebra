@@ -37,30 +37,6 @@ namespace Algebra.Core
         public bool HasTrivialSubgroup(params TE[] elements) =>
             elements.SetEquals([Identity]) || elements.SetEquals(Elements);
 
-        public bool HasNormalSubgroup(params TE[] elements)
-        {
-            var candidate = elements.ToImmutableHashSet();
-            return HasSubgroup(candidate) &&
-            (from g in Elements
-             from n in candidate
-             select elements.Contains(Op(Op(g, n), Inverse(g)))).Always();
-        }
-
-        public IEnumerable<TE> GetCoset(TE a, CosetType type, params TE[] subgroup)
-        {
-            if (!Elements.Contains(a))
-            {
-                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
-            }
-            if (!HasSubgroup(subgroup))
-            {
-                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
-            }
-            return type == CosetType.Left
-                ? subgroup.Select(h => Op(a, h))
-                : subgroup.Select(h => Op(h, a));
-        }
-
         public IEnumerable<IEnumerable<TE>> FindNonTrivialSubgroups()
         {
             var elements = Elements.Where(e => !e.Equals(Identity));
@@ -77,12 +53,50 @@ namespace Algebra.Core
             }
         }
 
-        // TODO: normal subgroup, factor group
+        public bool HasNormalSubgroup(params TE[] elements)
+        {
+            var candidate = elements.ToImmutableHashSet();
+            return HasSubgroup(candidate) &&
+            (from g in Elements
+             from n in candidate
+             select elements.Contains(Op(Op(g, n), Inverse(g)))).Always();
+        }
+
+        public Coset<TE> GetCoset(TE a, CosetType type, params TE[] subgroup)
+        {
+            if (!Elements.Contains(a))
+            {
+                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
+            }
+            if (!HasSubgroup(subgroup))
+            {
+                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
+            }
+            return type == CosetType.Left
+                ? new(a, subgroup.Select(h => Op(a, h)))
+                : new(a, subgroup.Select(h => Op(h, a)));
+        }
+
+        public Group<Coset<TE>> GetQuotientGroup(params TE[] elements)
+        {
+            if (!HasNormalSubgroup(elements))
+            {
+                throw new ArgumentException("Given elements are not a normal subgroup of this group", nameof(elements));
+            }
+            var cosets = Elements
+                .Select(e => GetCoset(e, CosetType.Left, elements))
+                .Distinct()
+                .ToArray();
+            var cayleyTable = new CayleyTable<Coset<TE>>(
+                (a, b) => new Coset<TE>(Op(a.Element, b.Element), elements.Select(e => Op(Op(a.Element, b.Element), e))),
+                cosets);
+            return new Group<Coset<TE>>(cayleyTable);
+        }
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :
         GroupBase<TE, IInverseStrategy<TE>>(cayleyTable, Strategy.CayleyTableInverse(cayleyTable))
-        where TE : IAdditionOperators<TE, TE, TE>, IAdditiveIdentity<TE, TE>, IUnaryNegationOperators<TE, TE>, IEquatable<TE>
+        where TE : IEquatable<TE>
     { }
 
     public class AdditiveGroup<TE>(params TE[] elements) :

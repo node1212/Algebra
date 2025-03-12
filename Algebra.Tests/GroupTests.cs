@@ -90,37 +90,39 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { e, rho1, rho2 };
 
-            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { e, rho1, rho2 }
-            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { e, rho1, rho2 }
+            #region Trivial
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup).Elements.ToArray();            // { e, rho1, rho2 }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup).Elements.ToArray();          // { e, rho1, rho2 }
 
-            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { e, rho1, rho2 }
-            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { e, rho1, rho2 }
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup).Elements.ToArray();       // { e, rho1, rho2 }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup).Elements.ToArray();     // { e, rho1, rho2 }
 
-            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { e, rho1, rho2 }
-            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { e, rho1, rho2 }
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup).Elements.ToArray();       // { e, rho1, rho2 }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup).Elements.ToArray();     // { e, rho1, rho2 }
+            #endregion
 
-            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
-            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup).Elements.ToArray();   // { sigma1, sigma2, sigma3 }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup).Elements.ToArray(); // { sigma1, sigma2, sigma3 }
 
-            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
-            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup).Elements.ToArray();   // { sigma1, sigma2, sigma3 }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup).Elements.ToArray(); // { sigma1, sigma2, sigma3 }
 
-            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { sigma1, sigma2, sigma3 }
-            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { sigma1, sigma2, sigma3 }
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup).Elements.ToArray();   // { sigma1, sigma2, sigma3 }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup).Elements.ToArray(); // { sigma1, sigma2, sigma3 }
 
-            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
-            rho1LeftCoset.SetEquals(subgroup).Should().BeTrue();
-            rho2LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();      // trivial
+            rho1LeftCoset.SetEquals(subgroup).Should().BeTrue();    // trivial
+            rho2LeftCoset.SetEquals(subgroup).Should().BeTrue();    // trivial
             sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
 
-            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
-            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeTrue();
-            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeTrue();
-            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue();
-            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue();
-            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue();
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();         // trivial
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeTrue();     // trivial
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeTrue();     // trivial
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue(); // subgroup is normal
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue(); // subgroup is normal
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue(); // subgroup is normal
         }
 
         [Fact]
@@ -128,37 +130,45 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { e, sigma1 };
 
-            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { e, sigma1 }
-            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { e, sigma1 }
+            #region Trivial
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup).Elements.ToArray();            // { e, sigma1 }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup).Elements.ToArray();          // { e, sigma1 }
+            #endregion
 
-            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { rho1, sigma3 }
-            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { rho1, sigma2 }
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup).Elements.ToArray();       // { rho1, sigma3 }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup).Elements.ToArray();     // { rho1, sigma2 }
 
-            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { rho2, sigma2 }
-            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { rho2, sigma3 }
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup).Elements.ToArray();       // { rho2, sigma2 }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup).Elements.ToArray();     // { rho2, sigma3 }
 
-            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { e, sigma1 }
-            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { e, sigma1 }
+            #region Trivial
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup).Elements.ToArray();   // { e, sigma1 }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup).Elements.ToArray(); // { e, sigma1 }
+            #endregion
 
-            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { rho2, sigma2 }
-            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { rho1, sigma2 }
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup).Elements.ToArray();   // { rho2, sigma2 }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup).Elements.ToArray(); // { rho1, sigma2 }
 
-            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { rho1, sigma3 }
-            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { rho2, sigma3 }
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup).Elements.ToArray();   // { rho1, sigma3 }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup).Elements.ToArray(); // { rho2, sigma3 }
 
-            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();      // trivial
             rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
             rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
-            sigma1LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma1LeftCoset.SetEquals(subgroup).Should().BeTrue();  // trivial
             sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            #endregion
 
-            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
-            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
-            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
-            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue();
-            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse();
-            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse();
+            #region Is left coset equal to its right coset?
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();          // trivial
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();     // subroup is not normal
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();     // subroup is not normal
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeTrue();  // trivial
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse(); // subroup is not normal
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse(); // subroup is not normal
+            #endregion
         }
 
         [Fact]
@@ -166,37 +176,41 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { e, sigma2 };
 
-            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { }
-            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { }
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup).Elements.ToArray();            // { }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup).Elements.ToArray();          // { }
 
-            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { }
-            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { }
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup).Elements.ToArray();       // { }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup).Elements.ToArray();     // { }
 
-            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { }
-            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { }
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup).Elements.ToArray();       // { }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup).Elements.ToArray();     // { }
 
-            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { }
-            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { }
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { }
-            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { }
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { }
-            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { }
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();      // trivial
             rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
             rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
-            sigma2LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma2LeftCoset.SetEquals(subgroup).Should().BeTrue();  // trivial
             sigma3LeftCoset.SetEquals(subgroup).Should().BeFalse();
+            #endregion
 
-            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
-            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
-            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
-            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse();
-            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue();
-            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse();
+            #region Is left coset equal to its right coset?
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();          // trivial
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();     // subroup is not normal
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();     // subroup is not normal
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse(); // subroup is not normal
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeTrue();  // trivial
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeFalse(); // subroup is not normal
+            #endregion
         }
 
         [Fact]
@@ -204,37 +218,41 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { e, sigma3 };
 
-            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup);            // { }
-            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup);          // { }
+            var eLeftCoset1 = S3.GetCoset(e, CosetType.Left, subgroup).Elements.ToArray();            // { }
+            var eRightCoset1 = S3.GetCoset(e, CosetType.Right, subgroup).Elements.ToArray();          // { }
 
-            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup);       // { }
-            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup);     // { }
+            var rho1LeftCoset = S3.GetCoset(rho1, CosetType.Left, subgroup).Elements.ToArray();       // { }
+            var rho1RightCoset = S3.GetCoset(rho1, CosetType.Right, subgroup).Elements.ToArray();     // { }
 
-            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup);       // { }
-            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup);     // { }
+            var rho2LeftCoset = S3.GetCoset(rho2, CosetType.Left, subgroup).Elements.ToArray();       // { }
+            var rho2RightCoset = S3.GetCoset(rho2, CosetType.Right, subgroup).Elements.ToArray();     // { }
 
-            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup);   // { }
-            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup); // { }
+            var sigma1LeftCoset = S3.GetCoset(sigma1, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma1RightCoset = S3.GetCoset(sigma1, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup);   // { }
-            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup); // { }
+            var sigma2LeftCoset = S3.GetCoset(sigma2, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma2RightCoset = S3.GetCoset(sigma2, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup);   // { }
-            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup); // { }
+            var sigma3LeftCoset = S3.GetCoset(sigma3, CosetType.Left, subgroup).Elements.ToArray();   // { }
+            var sigma3RightCoset = S3.GetCoset(sigma3, CosetType.Right, subgroup).Elements.ToArray(); // { }
 
-            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset1.SetEquals(subgroup).Should().BeTrue();      // trivial
             rho1LeftCoset.SetEquals(subgroup).Should().BeFalse();
             rho2LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma1LeftCoset.SetEquals(subgroup).Should().BeFalse();
             sigma2LeftCoset.SetEquals(subgroup).Should().BeFalse();
-            sigma3LeftCoset.SetEquals(subgroup).Should().BeTrue();
+            sigma3LeftCoset.SetEquals(subgroup).Should().BeTrue();  // trivial
+            #endregion
 
-            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();
-            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();
-            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();
-            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse();
-            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse();
-            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue();
+            #region Is left coset equal to its right coset?
+            eLeftCoset1.SetEquals(eRightCoset1).Should().BeTrue();          // trivial
+            rho1LeftCoset.SetEquals(rho1RightCoset).Should().BeFalse();     // subroup is not normal
+            rho2LeftCoset.SetEquals(rho2RightCoset).Should().BeFalse();     // subroup is not normal
+            sigma1LeftCoset.SetEquals(sigma1RightCoset).Should().BeFalse(); // subroup is not normal
+            sigma2LeftCoset.SetEquals(sigma2RightCoset).Should().BeFalse(); // subroup is not normal
+            sigma3LeftCoset.SetEquals(sigma3RightCoset).Should().BeTrue();  // trivial
+            #endregion
         }
 
         [Fact]
@@ -242,24 +260,28 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { 'e', 'a' };
 
-            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);   // { e, a }
-            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup); // { e, a }
-            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);   // { e, a }
-            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup); // { e, a }
-            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);   // { b, c }
-            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup); // { b, c }
-            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);   // { b, c }
-            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup); // { b, c }
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup).Elements.ToArray();   // { e, a }
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup).Elements.ToArray(); // { e, a }
+            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup).Elements.ToArray();   // { e, a }
+            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup).Elements.ToArray(); // { e, a }
+            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup).Elements.ToArray();   // { b, c }
+            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup).Elements.ToArray(); // { b, c }
+            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup).Elements.ToArray();   // { b, c }
+            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup).Elements.ToArray(); // { b, c }
 
-            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
-            aLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
+            aLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
             bLeftCoset.SetEquals(subgroup).Should().BeFalse();
             cLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            #endregion
 
-            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
-            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
-            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
-            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
+            #region Is left coset equal to its right coset?
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();    // trivial
+            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();    // trivial
+            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();    // subgroup is normal
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();    // subgroup is normal
+            #endregion
         }
 
         [Fact]
@@ -267,24 +289,28 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { 'e', 'b' };
 
-            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);
-            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup);
-            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);
-            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup);
-            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);
-            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup);
-            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);
-            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup);
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup).Elements.ToArray();
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup).Elements.ToArray();
+            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup).Elements.ToArray();
+            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup).Elements.ToArray();
+            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup).Elements.ToArray();
+            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup).Elements.ToArray();
+            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup).Elements.ToArray();
+            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup).Elements.ToArray();
 
-            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
             aLeftCoset.SetEquals(subgroup).Should().BeFalse();
-            bLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            bLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
             cLeftCoset.SetEquals(subgroup).Should().BeFalse();
+            #endregion
 
-            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
-            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
-            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
-            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
+            #region Is left coset equal to its right coset?
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();    // trivial
+            aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();    // subgroup is normal
+            bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();    // trivial
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();    // subgroup is normal
+            #endregion
         }
 
         [Fact]
@@ -292,24 +318,38 @@ namespace Algebra.Tests
         {
             var subgroup = new[] { 'e', 'c' };
 
-            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup);
-            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup);
-            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup);
-            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup);
-            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup);
-            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup);
-            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup);
-            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup);
+            var eLeftCoset = k4g.GetCoset('e', CosetType.Left, subgroup).Elements.ToArray();
+            var eRightCoset = k4g.GetCoset('e', CosetType.Right, subgroup).Elements.ToArray();
+            var aLeftCoset = k4g.GetCoset('a', CosetType.Left, subgroup).Elements.ToArray();
+            var aRightCoset = k4g.GetCoset('a', CosetType.Right, subgroup).Elements.ToArray();
+            var bLeftCoset = k4g.GetCoset('b', CosetType.Left, subgroup).Elements.ToArray();
+            var bRightCoset = k4g.GetCoset('b', CosetType.Right, subgroup).Elements.ToArray();
+            var cLeftCoset = k4g.GetCoset('c', CosetType.Left, subgroup).Elements.ToArray();
+            var cRightCoset = k4g.GetCoset('c', CosetType.Right, subgroup).Elements.ToArray();
 
-            eLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            #region Is coset equal to subgroup?
+            eLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
             aLeftCoset.SetEquals(subgroup).Should().BeFalse();
             bLeftCoset.SetEquals(subgroup).Should().BeFalse();
-            cLeftCoset.SetEquals(subgroup).Should().BeTrue();
+            cLeftCoset.SetEquals(subgroup).Should().BeTrue();   // trivial
+            #endregion
 
-            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();
+            #region Is left coset equal to its right coset?
+            eLeftCoset.SetEquals(eRightCoset).Should().BeTrue();    // trivial
             aLeftCoset.SetEquals(aRightCoset).Should().BeTrue();
             bLeftCoset.SetEquals(bRightCoset).Should().BeTrue();
-            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();
+            cLeftCoset.SetEquals(cRightCoset).Should().BeTrue();    // trivial
+            #endregion
+        }
+
+        [Fact]
+        public void QuotientGroup_Tests()
+        {
+            var normalSubgroup = new[] { e, rho1, rho2 };
+            var quotientGroup = S3.GetQuotientGroup(normalSubgroup);
+            quotientGroup.IsValid().Should().BeTrue();
+            quotientGroup.Order.Should().Be(2);
+            quotientGroup.IsAbelian().Should().BeTrue();
         }
     }
 }

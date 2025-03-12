@@ -24,7 +24,7 @@ namespace Algebra.Core
         {
             var elements = Elements.ToArray();
             return (from i in Enumerable.Range(0, Order - 1)
-                    from j in Enumerable.Range(i + 1, Order)
+                    from j in Enumerable.Range(i + 1, Order - i - 1)
                     select Op(elements[i], elements[j]).Equals(Op(elements[j], elements[i]))).Always();
         }
 
