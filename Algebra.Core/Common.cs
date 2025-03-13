@@ -109,13 +109,6 @@ namespace Algebra.Core
 
     public static class IEnumerableExtensions
     {
-        public static bool SetEquals<T>(this IEnumerable<T> left, IEnumerable<T> right) where T : IEquatable<T>
-        {
-            var leftHashSet = left.ToHashSet();
-            var rightHashSet = right.ToHashSet();
-            return leftHashSet.Count == rightHashSet.Count && leftHashSet.All(rightHashSet.Contains);
-        }
-
         public static bool Always(this IEnumerable<bool> source) => source.All(v => v);
 
         public static List<ImmutableHashSet<T>> GetCombinationsWithIdentity<T>(this IEnumerable<T> elements, int combinationSize, T identity)

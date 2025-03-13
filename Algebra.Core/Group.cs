@@ -35,7 +35,7 @@ namespace Algebra.Core
         public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.HasSubgroup(Elements);
 
         public bool HasTrivialSubgroup(params TE[] elements) =>
-            elements.SetEquals([Identity]) || elements.SetEquals(Elements);
+            (elements.Length == 1 && elements[0].Equals(Identity)) || Elements.SetEquals(elements);
 
         public IEnumerable<IEnumerable<TE>> FindNonTrivialSubgroups()
         {
@@ -87,9 +87,11 @@ namespace Algebra.Core
                 .Select(e => GetCoset(e, CosetType.Left, elements))
                 .Distinct()
                 .ToArray();
-            var cayleyTable = new CayleyTable<Coset<TE>>(
-                (a, b) => new Coset<TE>(Op(a.Element, b.Element), elements.Select(e => Op(Op(a.Element, b.Element), e))),
-                cosets);
+            var cayleyTable = new CayleyTable<Coset<TE>>((a, b) =>
+            {
+                var opResult = Op(a.Element, b.Element);
+                return new Coset<TE>(opResult, elements.Select(e => Op(opResult, e)));
+            }, cosets);
             return new Group<Coset<TE>>(cayleyTable);
         }
     }
