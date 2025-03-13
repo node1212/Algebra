@@ -33,6 +33,35 @@ namespace Algebra.Tests
         }
 
         [Fact]
+        public void DihedralGroup_Tests()
+        {
+            var cayleyTable = new CayleyTable<char>(new char[,]
+            {//    e    a    b    c    d    f
+                { 'e', 'a', 'b', 'c', 'd', 'f' },//e
+                { 'a', 'e', 'd', 'f', 'b', 'c' },//a
+                { 'b', 'f', 'e', 'd', 'c', 'a' },//b
+                { 'c', 'd', 'f', 'e', 'a', 'b' },//c
+                { 'd', 'c', 'a', 'b', 'f', 'e' },//d
+                { 'f', 'b', 'c', 'a', 'e', 'd' },//e
+            }, 'e', 'a', 'b', 'c', 'd', 'f');
+
+            var D3 = new Group<char>(cayleyTable);
+            D3.IsValid().Should().BeTrue();
+
+            var subgroups = D3.FindNonTrivialSubgroups();
+            subgroups.Should().HaveCount(4);
+            subgroups.Where(s => s.Order == 2).Should().HaveCount(3);
+            subgroups.Where(s => s.Order == 3).Should().ContainSingle();
+
+            var normalSubgroup = new[] { 'e', 'd', 'f' };
+
+            D3.HasNormalSubgroup(normalSubgroup).Should().BeTrue();
+
+            var quotientGroup = D3.GetQuotientGroup(normalSubgroup);
+            quotientGroup.IsValid().Should().BeTrue();
+        }
+
+        [Fact]
         public void SubGroup_Tests()
         {
             S3.IsValid().Should().BeTrue();
@@ -68,8 +97,10 @@ namespace Algebra.Tests
             var nonTrivialSubgroups = S3.FindNonTrivialSubgroups().ToArray();
 
             nonTrivialSubgroups.Should().HaveCount(4);
-            nonTrivialSubgroups.Where(s => s.Count() == 2).Should().HaveCount(3);
-            nonTrivialSubgroups.Where(s => s.Count() == 3).Should().ContainSingle();
+            nonTrivialSubgroups.Where(s => s.Order == 2).Should().HaveCount(3);
+            nonTrivialSubgroups.Where(s => s.Order == 3).Should().ContainSingle();
+
+            var indices = nonTrivialSubgroups.Select(S3.GetSubgroupIndex).ToArray();
         }
 
         [Fact]

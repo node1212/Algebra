@@ -1,10 +1,9 @@
-﻿using System.Collections.Immutable;
-using System.Numerics;
+﻿using System.Numerics;
 using Algebra.Core.Strategies;
 
 namespace Algebra.Core
 {
-    public abstract class GroupBase<TE, TS> : MonoidBase<TE, TS>
+    public abstract partial class GroupBase<TE, TS> : MonoidBase<TE, TS>
         where TE : IEquatable<TE>
         where TS : IInverseStrategy<TE>
     {
@@ -18,82 +17,6 @@ namespace Algebra.Core
 
         private bool HasInverseElement() =>
             Elements.All(a => Elements.Contains(Inverse(a)));
-
-        public bool HasSubgroup(params TE[] elements) => HasSubgroup(elements.ToImmutableHashSet());
-
-        private bool HasSubgroup(ImmutableHashSet<TE> elements)
-        {
-            if (!elements.IsSubsetOf(Elements))
-            {
-                return false;
-            }
-            return (from a in elements
-                    from b in elements
-                    select elements.Contains(Op(a, Inverse(b)))).Always();
-        }
-
-        public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.HasSubgroup(Elements);
-
-        public bool HasTrivialSubgroup(params TE[] elements) =>
-            (elements.Length == 1 && elements[0].Equals(Identity)) || Elements.SetEquals(elements);
-
-        public IEnumerable<IEnumerable<TE>> FindNonTrivialSubgroups()
-        {
-            var elements = Elements.Where(e => !e.Equals(Identity));
-            for (var i = 1; i < Order - 1; i++)
-            {
-                var combinations = elements.GetCombinationsWithIdentity(i, Identity);
-                foreach (var candidate in combinations)
-                {
-                    if (HasSubgroup(candidate))
-                    {
-                        yield return candidate;
-                    }
-                }
-            }
-        }
-
-        public bool HasNormalSubgroup(params TE[] elements)
-        {
-            var candidate = elements.ToImmutableHashSet();
-            return HasSubgroup(candidate) &&
-            (from g in Elements
-             from n in candidate
-             select elements.Contains(Op(Op(g, n), Inverse(g)))).Always();
-        }
-
-        public Coset<TE> GetCoset(TE a, CosetType type, params TE[] subgroup)
-        {
-            if (!Elements.Contains(a))
-            {
-                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
-            }
-            if (!HasSubgroup(subgroup))
-            {
-                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
-            }
-            return type == CosetType.Left
-                ? new(a, subgroup.Select(h => Op(a, h)))
-                : new(a, subgroup.Select(h => Op(h, a)));
-        }
-
-        public Group<Coset<TE>> GetQuotientGroup(params TE[] elements)
-        {
-            if (!HasNormalSubgroup(elements))
-            {
-                throw new ArgumentException("Given elements are not a normal subgroup of this group", nameof(elements));
-            }
-            var cosets = Elements
-                .Select(e => GetCoset(e, CosetType.Left, elements))
-                .Distinct()
-                .ToArray();
-            var cayleyTable = new CayleyTable<Coset<TE>>((a, b) =>
-            {
-                var opResult = Op(a.Element, b.Element);
-                return new Coset<TE>(opResult, elements.Select(e => Op(opResult, e)));
-            }, cosets);
-            return new Group<Coset<TE>>(cayleyTable);
-        }
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :
