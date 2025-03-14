@@ -1,4 +1,6 @@
-﻿using Algebra.Core.Permutations.T4;
+﻿using Algebra.Core.Groups;
+using Algebra.Core.Permutations.T4;
+using FluentAssertions;
 
 namespace Algebra.Tests
 {
@@ -35,38 +37,22 @@ namespace Algebra.Tests
         [Fact]
         public void Multiplication_Should_Work()
         {
-            var e = PermutationOf3Int.MultiplicativeIdentity;
-            var rho1 = new PermutationOf3Int(2, 3, 1); // (123)
-            var rho2 = new PermutationOf3Int(3, 1, 2); // (132)
-            var sigma1 = new PermutationOf3Int(2, 1, 3); // (12)
-            var sigma2 = new PermutationOf3Int(1, 3, 2); // (23)
-            var sigma3 = new PermutationOf3Int(3, 2, 1); // (13)
-
-            Assert.Equal(rho2, rho1 * rho1);
-            Assert.Equal(sigma2, sigma1 * rho1);
-            Assert.Equal(sigma3, sigma1 * rho1 * rho1);
-
-            Assert.Equal(e, sigma1 * sigma1);
-            Assert.Equal(e, rho1 * rho1 * rho1);
-            Assert.Equal(sigma1 * rho1 * rho1, rho1 * sigma1);
+            (S3Int.rho1 * S3Int.rho1).Should().Be(S3Int.rho2);
+            (S3Int.sigma1 * S3Int.rho1).Should().Be(S3Int.sigma2);
+            (S3Int.sigma1 * S3Int.rho1 * S3Int.rho1).Should().Be(S3Int.sigma3);
+            (S3Int.sigma1 * S3Int.sigma1).Should().Be(S3Int.e);
+            (S3Int.rho1 * S3Int.sigma1).Should().Be(S3Int.sigma1 * S3Int.rho1 * S3Int.rho1);
         }
 
         [Fact]
         public void Parsing_Should_Work()
         {
-            var e = PermutationOf3Int.Parse("(1)(2)(3)").ToString(); // 1 2 3
-            var rho1 = PermutationOf3Int.Parse("(123)").ToString();  // 2 3 1
-            var rho2 = PermutationOf3Int.Parse("(132)").ToString();  // 3 1 2
-            var sigma1 = PermutationOf3Int.Parse("(12)").ToString(); // 2 1 3
-            var sigma2 = PermutationOf3Int.Parse("(23)").ToString(); // 1 3 2
-            var sigma3 = PermutationOf3Int.Parse("(13)").ToString(); // 3 2 1
-
-            Assert.Equal("(1 2 3)", e);
-            Assert.Equal("(2 3 1)", rho1);
-            Assert.Equal("(3 1 2)", rho2);
-            Assert.Equal("(2 1 3)", sigma1);
-            Assert.Equal("(1 3 2)", sigma2);
-            Assert.Equal("(3 2 1)", sigma3);
+            PermutationOf3Int.Parse("(1)(2)(3)").Should().Be(S3Int.e);      // 1 2 3
+            PermutationOf3Int.Parse("(123)").Should().Be(S3Int.rho1);    // 2 3 1
+            PermutationOf3Int.Parse("(132)").Should().Be(S3Int.rho2);    // 3 1 2
+            PermutationOf3Int.Parse("(12)").Should().Be(S3Int.sigma1); // 2 1 3
+            PermutationOf3Int.Parse("(23)").Should().Be(S3Int.sigma2); // 1 3 2
+            PermutationOf3Int.Parse("(13)").Should().Be(S3Int.sigma3); // 3 2 1
         }
     }
 }

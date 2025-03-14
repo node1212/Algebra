@@ -10,7 +10,7 @@ namespace Algebra.Core.Permutations
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf2Char, PermutationOf2Char>,
         IInversionOperator<PermutationOf2Char, PermutationOf2Char>,
-        IPermutationsGenerator<PermutationOf2Char, char>,
+        IPermutationsGenerator<PermutationOf2Char>,
         IParsable<PermutationOf2Char>
     {
         public static bool operator ==(PermutationOf2Char left, PermutationOf2Char right) => EqualityOperator(left, right);

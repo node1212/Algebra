@@ -1,41 +1,58 @@
 ﻿using System.Numerics;
+using Algebra.Core.Strategies;
 
 namespace Algebra.Core
 {
-    public abstract class Group<T> : Monoid<T> where T : IEquatable<T>
+    public abstract partial class GroupBase<TE, TS> : MonoidBase<TE, TS>
+        where TE : IEquatable<TE>
+        where TS : IInverseStrategy<TE>
     {
-        public Group(CayleyTable<T> cayleyTable) : base(cayleyTable) { }
+        public GroupBase(CayleyTable<TE> cayleyTable, TS strategy) : base(cayleyTable, strategy) { }
 
-        public Group(T[] elements) : base(elements) { }
+        public GroupBase(TE[] elements, TS strategy) : base(elements, strategy) { }
 
-        public override bool IsValid => base.IsValid && HasInverseElement;
+        public override bool IsValid() => base.IsValid() && HasInverseElement();
 
-        protected virtual T Inverse(T element) => _cayleyTable.GetInverse(element);
+        protected virtual TE Inverse(TE element) => _cayleyTable.GetInverse(element);
 
-        private bool HasInverseElement =>
-            Elements.All(a => Elements.Contains(Inverse(a), EqualityComparer));
+        private bool HasInverseElement() =>
+            Elements.All(a => Elements.Contains(Inverse(a)));
 
-        public bool HasSubgroup(params T[] elements) =>
-            Elements.All(a => elements.Contains(Op(a, Inverse(a)), EqualityComparer));
+        public int GetElementOrder(TE a)
+        {
+            if (!Elements.Contains(a))
+            {
+                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
+            }
+            var exponent = a;
+            for (var i = 2; i <= Order; i++)
+            {
+                exponent = Op(exponent, a);
+                if (exponent.Equals(Identity))
+                {
+                    return i;
+                }
+            }
+            throw new InvalidOperationException("Should not be here");
+        }
+
+        public bool IsGenerator(TE a) => GetElementOrder(a) == Order;
+
+        public bool IsCyclic() => Order.IsPrime() || Elements.Any(IsGenerator);
     }
 
-    public class AdditiveGroup<T>(params T[] elements) : Group<T>(elements) where T :
-        IAdditionOperators<T, T, T>, IAdditiveIdentity<T, T>, IUnaryNegationOperators<T, T>, IEquatable<T>
-    {
-        protected override T Op(T left, T right) => left + right;
+    public class Group<TE>(CayleyTable<TE> cayleyTable) :
+        GroupBase<TE, IInverseStrategy<TE>>(cayleyTable, Strategy.CayleyTableInverse(cayleyTable))
+        where TE : IEquatable<TE>
+    { }
 
-        public override T Identity => T.AdditiveIdentity;
+    public class AdditiveGroup<TE>(params TE[] elements) :
+        GroupBase<TE, IInverseStrategy<TE>>(elements, Strategy.AdditiveInverse<TE>())
+        where TE : IAdditionOperators<TE, TE, TE>, IAdditiveIdentity<TE, TE>, IUnaryNegationOperators<TE, TE>, IEquatable<TE>
+    { }
 
-        protected override T Inverse(T element) => -element;
-    }
-
-    public class MultiplicativeGroup<T>(params T[] elements) : Group<T>(elements) where T :
-        IMultiplyOperators<T, T, T>, IMultiplicativeIdentity<T, T>, IInversionOperator<T, T>, IEquatable<T>
-    {
-        protected override T Op(T left, T right) => left * right;
-
-        public override T Identity => T.MultiplicativeIdentity;
-
-        protected override T Inverse(T element) => ~element;
-    }
+    public class MultiplicativeGroup<TE>(params TE[] elements) :
+        GroupBase<TE, IInverseStrategy<TE>>(elements, Strategy.MultiplicativeInverse<TE>())
+        where TE : IMultiplyOperators<TE, TE, TE>, IMultiplicativeIdentity<TE, TE>, IInversionOperator<TE, TE>, IEquatable<TE>
+    { }
 }

@@ -1,4 +1,4 @@
-﻿namespace Algebra.Core
+﻿namespace Algebra.Core.Groups
 {
     public class Klein4Group : Group<char>
     {
@@ -11,5 +11,10 @@
                 { 'c', 'b', 'a', 'e' }
             }, 'e', 'a', 'b', 'c'))
         { }
+
+        public const char e = 'e';
+        public const char a = 'a';
+        public const char b = 'b';
+        public const char c = 'c';
     }
 }

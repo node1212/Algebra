@@ -3,10 +3,10 @@ using System.Text.RegularExpressions;
 
 namespace Algebra.Core.Permutations
 {
-    public abstract partial class PermutationBase<TPermutation, TElement>
-        : IEquatable<TPermutation>, IFormattable
-            where TPermutation : PermutationBase<TPermutation, TElement>
-            where TElement : IEquatable<TElement>, IComparable<TElement>
+    public abstract partial class PermutationBase<TPermutation, TElement> :
+        IEquatable<TPermutation>, IFormattable
+        where TPermutation : PermutationBase<TPermutation, TElement>
+        where TElement : IEquatable<TElement>, IComparable<TElement>
     {
         #region CTOR & verification
         protected PermutationBase(TElement[] allowedValues, TElement[] elements)
