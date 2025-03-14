@@ -17,6 +17,28 @@ namespace Algebra.Core
 
         private bool HasInverseElement() =>
             Elements.All(a => Elements.Contains(Inverse(a)));
+
+        public int GetElementOrder(TE a)
+        {
+            if (!Elements.Contains(a))
+            {
+                throw new ArgumentException($"Element {a} does not belong to the group", nameof(a));
+            }
+            var exponent = a;
+            for (var i = 2; i <= Order; i++)
+            {
+                exponent = Op(exponent, a);
+                if (exponent.Equals(Identity))
+                {
+                    return i;
+                }
+            }
+            throw new InvalidOperationException("Should not be here");
+        }
+
+        public bool IsGenerator(TE a) => GetElementOrder(a) == Order;
+
+        public bool IsCyclic() => Order.IsPrime() || Elements.Any(IsGenerator);
     }
 
     public class Group<TE>(CayleyTable<TE> cayleyTable) :

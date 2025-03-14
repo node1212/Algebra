@@ -23,6 +23,9 @@ namespace Algebra.Tests
             var identity = CayleyTable.GetIdentities().Single();
             identity.Type.Should().Be(NeutralElementType.TwoSided);
             CayleyTable.Identity.Should().Be('c');
+
+            var g = new Group<char>(CayleyTable);
+            g.IsCyclic().Should().BeFalse();
         }
 
         [Fact]

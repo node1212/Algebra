@@ -19,7 +19,20 @@ namespace Algebra.Core
 					select candidate.Contains(Op(a, Inverse(b)))).Always();
 		}
 
-		public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.HasSubgroup(Elements);
+        public int GetSubgroupIndex(params TE[] subgroup) => GetSubgroupIndex(subgroup.ToImmutableHashSet());
+
+        public int GetSubgroupIndex(GroupBase<TE, TS> subgroup) => GetSubgroupIndex(subgroup.Elements);
+
+        private int GetSubgroupIndex(ImmutableHashSet<TE> subgroup)
+        {
+            if (!HasSubgroup(subgroup))
+            {
+                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
+            }
+            return Order / subgroup.Count;
+        }
+
+        public bool IsSubgroupOf(GroupBase<TE, TS> other) => other.HasSubgroup(Elements);
 
 		public bool HasTrivialSubgroup(params TE[] elements) => HasTrivialSubgroup(elements.ToImmutableHashSet());
 

@@ -37,16 +37,19 @@ namespace Algebra.Tests
         {
             var cayleyTable = new CayleyTable<char>(new char[,]
             {//    e    a    b    c    d    f
-                { 'e', 'a', 'b', 'c', 'd', 'f' },//e
-                { 'a', 'e', 'd', 'f', 'b', 'c' },//a
-                { 'b', 'f', 'e', 'd', 'c', 'a' },//b
-                { 'c', 'd', 'f', 'e', 'a', 'b' },//c
-                { 'd', 'c', 'a', 'b', 'f', 'e' },//d
-                { 'f', 'b', 'c', 'a', 'e', 'd' },//e
+           /*e*/{ 'e', 'a', 'b', 'c', 'd', 'f' },
+           /*a*/{ 'a', 'e', 'd', 'f', 'b', 'c' },
+           /*b*/{ 'b', 'f', 'e', 'd', 'c', 'a' },
+           /*c*/{ 'c', 'd', 'f', 'e', 'a', 'b' },
+           /*d*/{ 'd', 'c', 'a', 'b', 'f', 'e' },
+           /*f*/{ 'f', 'b', 'c', 'a', 'e', 'd' },
             }, 'e', 'a', 'b', 'c', 'd', 'f');
 
             var D3 = new Group<char>(cayleyTable);
+
             D3.IsValid().Should().BeTrue();
+
+            D3.IsCyclic().Should().BeFalse();
 
             var subgroups = D3.FindNonTrivialSubgroups();
             subgroups.Should().HaveCount(4);
@@ -65,6 +68,8 @@ namespace Algebra.Tests
         public void SubGroup_Tests()
         {
             S3.IsValid().Should().BeTrue();
+
+            S3.IsCyclic().Should().BeFalse();
 
             S3.HasSubgroup(e).Should().BeTrue();
             S3.HasTrivialSubgroup(e).Should().BeTrue();
@@ -114,6 +119,8 @@ namespace Algebra.Tests
             k4g.HasNormalSubgroup('e', 'a').Should().BeTrue();
             k4g.HasNormalSubgroup('e', 'b').Should().BeTrue();
             k4g.HasNormalSubgroup('e', 'c').Should().BeTrue();
+
+            k4g.IsCyclic().Should().BeFalse(); // TODO move it
         }
 
         [Fact]

@@ -32,19 +32,6 @@ namespace Algebra.Core
 				: new(a, subgroup.Select(h => Op(h, a)));
 		}
 
-        public int GetSubgroupIndex(params TE[] subgroup) => GetSubgroupIndex(subgroup.ToImmutableHashSet());
-
-        public int GetSubgroupIndex(GroupBase<TE, TS> subgroup) => GetSubgroupIndex(subgroup.Elements);
-
-        private int GetSubgroupIndex(ImmutableHashSet<TE> subgroup)
-        {
-            if (!HasSubgroup(subgroup))
-            {
-                throw new ArgumentException("Given elements are not a subgroup of this group", nameof(subgroup));
-            }
-            return Order / subgroup.Count;
-        }
-
         public Group<Coset<TE>> GetQuotientGroup(params TE[] normalSubgroup) => GetQuotientGroup(normalSubgroup.ToImmutableHashSet());
 
 		public Group<Coset<TE>> GetQuotientGroup(GroupBase<TE, TS> normalSubgroup) => GetQuotientGroup(normalSubgroup.Elements);
