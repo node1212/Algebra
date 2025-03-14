@@ -33,7 +33,7 @@ namespace Algebra.Core.Permutations.T4
 <#          if (i <= 5)
             {
 #>
-        IPermutationsGenerator<Permutation<#=suffix#>, <#=name#>>,
+        IPermutationsGenerator<Permutation<#=suffix#>>,
 <#
             }
 #>

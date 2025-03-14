@@ -10,7 +10,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf3Int, PermutationOf3Int>,
         IInversionOperator<PermutationOf3Int, PermutationOf3Int>,
-        IPermutationsGenerator<PermutationOf3Int, int>,
+        IPermutationsGenerator<PermutationOf3Int>,
         IParsable<PermutationOf3Int>
     {
         public static bool operator ==(PermutationOf3Int left, PermutationOf3Int right) => EqualityOperator(left, right);
@@ -45,7 +45,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf4Int, PermutationOf4Int>,
         IInversionOperator<PermutationOf4Int, PermutationOf4Int>,
-        IPermutationsGenerator<PermutationOf4Int, int>,
+        IPermutationsGenerator<PermutationOf4Int>,
         IParsable<PermutationOf4Int>
     {
         public static bool operator ==(PermutationOf4Int left, PermutationOf4Int right) => EqualityOperator(left, right);
@@ -80,7 +80,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<int>,
         IMultiplicativeIdentity<PermutationOf5Int, PermutationOf5Int>,
         IInversionOperator<PermutationOf5Int, PermutationOf5Int>,
-        IPermutationsGenerator<PermutationOf5Int, int>,
+        IPermutationsGenerator<PermutationOf5Int>,
         IParsable<PermutationOf5Int>
     {
         public static bool operator ==(PermutationOf5Int left, PermutationOf5Int right) => EqualityOperator(left, right);
@@ -243,7 +243,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf3Char, PermutationOf3Char>,
         IInversionOperator<PermutationOf3Char, PermutationOf3Char>,
-        IPermutationsGenerator<PermutationOf3Char, char>,
+        IPermutationsGenerator<PermutationOf3Char>,
         IParsable<PermutationOf3Char>
     {
         public static bool operator ==(PermutationOf3Char left, PermutationOf3Char right) => EqualityOperator(left, right);
@@ -278,7 +278,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf4Char, PermutationOf4Char>,
         IInversionOperator<PermutationOf4Char, PermutationOf4Char>,
-        IPermutationsGenerator<PermutationOf4Char, char>,
+        IPermutationsGenerator<PermutationOf4Char>,
         IParsable<PermutationOf4Char>
     {
         public static bool operator ==(PermutationOf4Char left, PermutationOf4Char right) => EqualityOperator(left, right);
@@ -313,7 +313,7 @@ namespace Algebra.Core.Permutations.T4
         IHasAllowedValues<char>,
         IMultiplicativeIdentity<PermutationOf5Char, PermutationOf5Char>,
         IInversionOperator<PermutationOf5Char, PermutationOf5Char>,
-        IPermutationsGenerator<PermutationOf5Char, char>,
+        IPermutationsGenerator<PermutationOf5Char>,
         IParsable<PermutationOf5Char>
     {
         public static bool operator ==(PermutationOf5Char left, PermutationOf5Char right) => EqualityOperator(left, right);

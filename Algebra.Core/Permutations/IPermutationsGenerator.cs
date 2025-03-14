@@ -1,8 +1,6 @@
 ﻿namespace Algebra.Core.Permutations
 {
-    public interface IPermutationsGenerator<TPermutation, TElement>
-        where TPermutation : PermutationBase<TPermutation, TElement>
-        where TElement : IEquatable<TElement>, IComparable<TElement>
+    public interface IPermutationsGenerator<TPermutation>
     {
         static abstract TPermutation[] Generate();
     }
